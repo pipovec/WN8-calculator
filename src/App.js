@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './w3.css';
 import Calculator from './Calculator';
 import Picture from './Picture';
 import Result from './Result';
@@ -49,31 +50,37 @@ getTankData()  {
     this.setState({etv_tank: data});
   }
 
-  render() {    
+
+
+  render() {
+
+    var pictureHeight = {
+      marginTop: "10px",
+      height: "130px",
+    };
 
     return (
-      <div className="row">
-        <div className="row">
-          <div className="col-sm-6 col-sm-offset-3 text-center">
+      <div className="w3-container">
+        <div className="w3-row-padding">
+          <div className="w3-quarter w3-hide-small">.</div>
+          <div className="w3-half">
               <h3>WN8 online calculator</h3>
               <p>
                 I am using Expected Tank Values from server <a href="https://modxvm.com/en/wn8-expected-values/">XVM</a>
               </p>
             </div>
         </div>
-        <div className="row">
+        <div className="w3-row-padding">
           <div className="col-sm-6 col-sm-offset-3 text-center">
             <Calculator tanks={this.state.tanks}  etv={this.state.etvdata} onFindTankId={this.handleTankId} onFindETV={this.handleETVTank}/>
           </div>
-          <div className="row">
-              <div className="col-sm-6 col-sm-offset-3 text-center">
+          <div className="w3-row-padding">
+              <div className="w3-container w3-padding" style={pictureHeight}>
                 <Picture tanks={this.state.tanks} id={this.state.tank_id}/>
             </div>
           </div>
-          <div className="row">
-              <div className="col-sm-6 col-sm-offset-3 text-center">
+          <div className="w3-row-padding">
                 <Result etv_tank={this.state.etvdata} id={this.state.tank_id}/>
-            </div>
           </div>
         </div>
       </div>

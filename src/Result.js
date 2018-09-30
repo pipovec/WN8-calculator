@@ -57,7 +57,7 @@ class Result extends Component {
   returnStep1(expValue, yValue) {
     var result = yValue/expValue;
     result = result.toFixed(4);
-    
+
     if(isNaN(result))  {
       result = 0.0
     }
@@ -67,17 +67,17 @@ class Result extends Component {
 
   returnrFRAGc(expValue,yValue,rDMGc) {
     var rFRAG = yValue/expValue;
-    rDMGc = parseFloat(rDMGc);    
+    rDMGc = parseFloat(rDMGc);
 
     var rFRAGc = Math.max(0,Math.min(rDMGc + 0.2,(rFRAG   - 0.12)/(1 - 0.12)));
-    
+
     if(isNaN(rFRAGc))  {
       rFRAGc = 0.0
     }
-    
+
     rFRAGc = rFRAGc.toFixed(4);
 
-    
+
 
     return rFRAGc;
   }
@@ -129,12 +129,12 @@ class Result extends Component {
     return rDEFc.toFixed(4);
   }
 
-  
+
 
   render() {
 
-    
-  
+
+
     var s = this.Data();
     if(s[3]== null){s[3]=0;s[1]=0;s[2]=0;s[4]=0;s[5]=0;}
     var rDMGc  = this.returnrDMGc(s[1],this.state.yDmg);
@@ -159,65 +159,78 @@ class Result extends Component {
       Wcolor = '#afdfdb';
     } else if (WN8 > 3158) {
       Wcolor = '#e4c3e4';
-    }     
-    
+    }
+
     var WN8Style = {
       background: Wcolor,
     }
- 
-    
+
+
 
     return (
 
-      <div className="well">
 
-        <form className="form-horizontal">
-        <div className="row">
-          <div className="col-sm-2 col-sm-offset-1"> <label>Frag</label><input type="text" className="form-control text-center" onChange={this.handleYFrag}/></div>
-          <div className="col-sm-2"> <label>Damage</label><input type="text" className="form-control text-center" onChange={this.handleYDmg}/></div>
-          <div className="col-sm-2"> <label>Spot</label><input type="text" className="form-control text-center" onChange={this.handleYSpot}/></div>
-          <div className="col-sm-2"> <label>Def</label><input type="text" className="form-control text-center" onChange={this.handleYDef}/></div>
-          <div className="col-sm-2"> <label>Win</label><input type="text" className="form-control text-center" onChange={this.handleYWin}/></div>
+      <div>
+        <div className="w3-row-padding w3-center">
+          <div className="w3-col l1 w3-hide-small"> .</div>
+          <div className="w3-col l2"> <label>Frag /Kills/ </label>
+            <input type="text" className="w3-input w3-round w3-border" onChange={this.handleYFrag}/>
+          </div>
 
+          <div className="w3-col l2"> <label>Damage</label>
+            <input type="text" className="w3-input w3-round w3-border" onChange={this.handleYDmg}/>
+          </div>
+
+          <div className="w3-col l2"> <label>Spot</label>
+            <input type="text" className="w3-input w3-round w3-border" onChange={this.handleYSpot}/>
+          </div>
+
+          <div className="w3-col l2"> <label>Def</label>
+            <input type="text" className="w3-input w3-round w3-border" onChange={this.handleYDef}/>
+          </div>
+
+          <div className="w3-col l2"> <label>Win</label>
+            <input type="text" className="w3-input w3-round w3-border" onChange={this.handleYWin}/>
+          </div>
         </div>
-        </form>
+
         <hr />
-        <div className="row">
-         
-          <table className="table table-bordered text-center">
-            <thead>
+
+
+          <table className="w3-table w3-border w3-centered w3-bordered">
+            <thead className="w3-tiny">
               <tr><th className="text-center">expFrag</th>
-                  <th className="text-center">expDamage</th>
+                  <th className="text-center">expDMG</th>
                   <th className="text-center">expSpot</th>
                   <th className="text-center">expDef</th>
                   <th className="text-center">expWin</th></tr>
             </thead>
             <tbody>
-              <tr className="success">
+              <tr>
                 <td>{s[3]}</td>
                 <td>{s[1]}</td>
                 <td>{s[4]}</td>
                 <td>{s[2]}</td>
                 <td>{s[5]}</td>
               </tr>
-            </tbody>          
-            <thead>
+            </tbody>
+            <thead className="w3-tiny">
             <tr><th className="text-center">rFrag</th>
-                <th className="text-center">rDamage</th>
+                <th className="text-center">rDMG</th>
                 <th className="text-center">rSpot</th>
                 <th className="text-center">rDef</th>
                 <th className="text-center">rWin</th></tr>
           </thead>
           <tbody>
-            <tr className="success">
+            <tr>
               <td>{this.returnStep1(s[3],this.state.yFrag)}</td>
               <td>{this.returnStep1(s[1],this.state.yDmg)}</td>
               <td>{this.returnStep1(s[4],this.state.ySpot)}</td>
               <td>{this.returnStep1(s[2],this.state.yDef)}</td>
               <td>{this.returnStep1(s[5],this.state.yWin)}</td>
             </tr>
-          </tbody>        
-          <thead>
+          </tbody>
+          <thead className="w3-tiny">
             <tr><th className="text-center">rFragc</th>
                 <th className="text-center">rDamagec</th>
                 <th className="text-center">rSpotc</th>
@@ -225,7 +238,7 @@ class Result extends Component {
                 <th className="text-center">rWinc</th></tr>
           </thead>
           <tbody>
-            <tr className="success">
+            <tr>
               <td>{rFragc}</td>
               <td>{rDMGc}</td>
               <td>{rSpotc}</td>
@@ -234,15 +247,16 @@ class Result extends Component {
             </tr>
           </tbody>
         </table>
-      
-      </div>
 
 
 
 
-      <div className="row" style={WN8Style}>    
-           
-        Value of WN8: <span>{WN8} </span>
+
+
+      <div className="w3-row" style={WN8Style}>
+        <div className="w3-center">
+          Value of WN8: <span>{WN8} </span>
+        </div>
       </div>
 
       </div>

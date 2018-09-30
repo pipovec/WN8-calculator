@@ -47,7 +47,7 @@ handleTank(e) {
 }
 
   render() {
-  
+
   var Tanks = [];
   const levels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const LevelsItem = levels.map((levels)=>
@@ -56,7 +56,7 @@ handleTank(e) {
 
     let c = this.props.tanks.data;
     let i = 0;
-    
+
     for(const prop in c)     {
         if(c[prop].type === this.state.select) {
             if(parseInt(c[prop].tier,10) === parseInt(this.state.level,10))  {
@@ -67,28 +67,35 @@ handleTank(e) {
     }
 
     return (
-      <div className="well">
-            {/* Vyber konkretneho tanku */}
-            <form className="form-inline">
-              <select  value={this.state.tank_id} onChange={this.handleTank} className="form-control">
-                {Tanks}
-              </select>
+      <div className="w3-row-padding">
+
+            {/* Vyber level tankov */}
+            <div class="w3-third">
+            <label for="level">Level</label>
+            <select  value={this.state.level} onChange={this.handleLevel} type="number" className="w3-select" id="level">
+              {LevelsItem}
+            </select>
+            </div>
 
             {/* Vyber typy tankov */}
-            <select  value={this.state.select} onChange={this.handleType} className="form-control">
+            <div class="w3-third">
+            <label for="kind">Type of tank</label>
+            <select  value={this.state.select} onChange={this.handleType} className="w3-select" id="kind">
               <option value="mediumTank">mediumTank</option>
               <option value="heavyTank">heavyTank</option>
               <option value="lightTank">lightTank</option>
               <option value="AT-SPG">TD</option>
               <option value="SPG">SPG</option>
             </select>
+            </div>
 
-            {/* Vyber level tankov */}
-            <select  value={this.state.level} onChange={this.handleLevel} className="form-control">
-              {LevelsItem}
-            </select>
-        </form>
-        {this.taaaa}
+            {/* Vyber konkretneho tanku */}
+            <div class="w3-third">
+            <label for="tank">Tank</label>
+              <select  value={this.state.tank_id} onChange={this.handleTank} className="w3-select" input="tank">
+                {Tanks}
+                </select>
+            </div>
       </div>
 
 
