@@ -145,6 +145,28 @@ class Result extends Component {
     var WN8 = 980*rDMGc + 210*rDMGc*rFragc + 155*rFragc*rSpotc + 75*rDefc*rFragc + 145*Math.min(1.8,rWinc);
     WN8 = WN8.toFixed(2);
 
+    var Wcolor = 'red';
+
+    if(WN8 <= 430) {
+      Wcolor = 'red';
+    } else if (WN8 <= 965) {
+      Wcolor = '#ebd09e';
+    } else if (WN8 <= 1562) {
+      Wcolor = 'yellow';
+    } else if (WN8 <= 2349) {
+      Wcolor = '#9dc39d';
+    } else if (WN8 <= 3158) {
+      Wcolor = '#afdfdb';
+    } else if (WN8 > 3158) {
+      Wcolor = '#e4c3e4';
+    }     
+    
+    var WN8Style = {
+      background: Wcolor,
+    }
+ 
+    
+
     return (
 
       <div className="well">
@@ -218,8 +240,9 @@ class Result extends Component {
 
 
 
-      <div className="row">
-        Value of WN8: {WN8}
+      <div className="row" style={WN8Style}>    
+           
+        Value of WN8: <span>{WN8} </span>
       </div>
 
       </div>
