@@ -60,26 +60,21 @@ getTankData()  {
     };
 
     return (
-      <div className="w3-container">
+      <div className="w3-container w3-center">
+          <h3>WN8 online calculator</h3>
+          <p>I am using Expected Tank Values from server <a href="https://modxvm.com/en/wn8-expected-values/">XVM</a></p>
+          
+        
         <div className="w3-row-padding">
-          <div className="w3-quarter w3-hide-small">.</div>
-          <div className="w3-half">
-              <h3>WN8 online calculator</h3>
-              <p>
-                I am using Expected Tank Values from server <a href="https://modxvm.com/en/wn8-expected-values/">XVM</a>
-              </p>
-            </div>
-        </div>
-        <div className="w3-row-padding">
-          <div className="col-sm-6 col-sm-offset-3 text-center">
+          <div className="col-sm-6 w3-padding w3-card w3-margin-bottom ">
             <Calculator tanks={this.state.tanks}  etv={this.state.etvdata} onFindTankId={this.handleTankId} onFindETV={this.handleETVTank}/>
           </div>
-          <div className="w3-row-padding">
+          <div className="w3-row-padding w3-card w3-margin-bottom">
               <div className="w3-container w3-padding" style={pictureHeight}>
                 <Picture tanks={this.state.tanks} id={this.state.tank_id}/>
             </div>
           </div>
-          <div className="w3-row-padding">
+          <div className="w3-row-padding w3-card w3-padding">
                 <Result etv_tank={this.state.etvdata} id={this.state.tank_id}/>
           </div>
         </div>
