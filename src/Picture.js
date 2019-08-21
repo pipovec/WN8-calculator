@@ -10,18 +10,9 @@ class Picture extends Component {
 
     }
 
-    var pictureH = {
-      width: "200px",
-      marginLeft: "auto",
-      marginRight: "auto"
-    };
-
-    return (
-      <div className="w3-container">
-        <div className="w3-center">
-        <img className=".img-responsive rounded" style={pictureH}  src={picture} alt="" />
-        </div>
-      </div>
+    return (              
+      <img className="w3-image" src={picture} alt="" />        
+      
     );
   }
 

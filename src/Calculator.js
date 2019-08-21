@@ -3,11 +3,12 @@ import React, { Component } from 'react';
 class Calculator extends Component {
   constructor(props) {
     super(props);
-    this.state = {type: 'mediumTank',level: '10',tank_id: '0',};
-    this.handleType = this.handleType.bind(this);
-    this.handleLevel = this.handleLevel.bind(this);
-    this.handleTank = this.handleTank.bind(this);
-    this.Data = this.Data.bind(this);
+    this.state = {type: '', level: '', tank_id: '', tanks: ''}
+    this.handleType = this.handleType.bind(this)
+    this.handleLevel = this.handleLevel.bind(this)
+    this.handleTank = this.handleTank.bind(this)
+    this.Data = this.Data.bind(this)
+    this.SendRequest = this.SendRequest.bind(this)
   }
 
   Data() {
@@ -28,58 +29,74 @@ class Calculator extends Component {
     return dat;
   }
 
+componentDidMount() {
+  this.SendRequest('10','mediumTank');
+  this.setState({type: 'mediumTank', level: '10', tank_id: '0'})
+}
+
+
+SendRequest(level, type) {
+  var url = 'https://fpcstat.cz/api/vehicles/level/'+level+'/type/'+type
+
+  fetch(url)
+  .then( response => {
+    return response.json()
+  })
+  .then( json => {    
+    this.setState({tanks: json.data})    
+  })
+
+}
 
 handleType(e) {
-  this.setState({select: e.target.value});
+  this.setState({select: e.target.value})
+  this.SendRequest(this.state.level,e.target.value)
 }
 
 handleLevel(e) {
-  this.setState({level: e.target.value});
+  this.setState({level: e.target.value});  
+  this.SendRequest(e.target.value,this.state.type)
 }
 
 handleTank(e) {
   var t = this.Data();
-  this.setState({tank_id: e.target.value});
-  this.props.onFindTankId(e.target.value);
-  this.props.onFindETV(t);
+  this.setState({tank_id: e.target.value})
+  this.props.onFindTankId(e.target.value)
+  this.props.onFindETV(t)
 
 
 }
 
   render() {
 
-  var Tanks = [];
-  const levels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  const LevelsItem = levels.map((levels)=>
-    <option key={levels} value={levels}> {levels} </option>
-  );
+    const levels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    var Tanks = <option key='' value=''>  </option>
+    
+    const LevelsItem = levels.map((levels)=>
+      <option key={levels} value={levels}> {levels} </option>
+    );
 
-    let c = this.props.tanks.data;
-    let i = 0;
-
-    for(const prop in c)     {
-        if(c[prop].type === this.state.select) {
-            if(parseInt(c[prop].tier,10) === parseInt(this.state.level,10))  {
-            Tanks[i]=<option key={c[prop].tank_id} value={c[prop].tank_id}> {c[prop].short_name} </option>;
-            i++;
-          }
-        }
-    }
-
+    if(this.state.tanks.length > 0)
+    {
+      Tanks = this.state.tanks.map( (tank) => 
+        <option key={tank.tank_id} value={tank.tank_id}>{tank.name}</option>        
+      )
+    }    
+    
     return (
       <div className="w3-row-padding">
 
             {/* Vyber level tankov */}
-            <div class="w3-third">
-            <label for="level">Level</label>
+            <div className="w3-third">
+            <label>Level</label>
             <select  value={this.state.level} onChange={this.handleLevel} type="number" className="w3-select" id="level">
               {LevelsItem}
             </select>
             </div>
 
             {/* Vyber typy tankov */}
-            <div class="w3-third">
-            <label for="kind">Type of tank</label>
+            <div className="w3-third">
+            <label>Type of tank</label>
             <select  value={this.state.select} onChange={this.handleType} className="w3-select" id="kind">
               <option value="mediumTank">mediumTank</option>
               <option value="heavyTank">heavyTank</option>
@@ -90,14 +107,13 @@ handleTank(e) {
             </div>
 
             {/* Vyber konkretneho tanku */}
-            <div class="w3-third">
-            <label for="tank">Tank</label>
+            <div className="w3-third">
+            <label>Tank</label>
               <select  value={this.state.tank_id} onChange={this.handleTank} className="w3-select" input="tank">
                 {Tanks}
                 </select>
             </div>
       </div>
-
 
     );
   }
