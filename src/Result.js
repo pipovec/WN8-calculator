@@ -1,16 +1,30 @@
 import React, { Component } from 'react';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+import Divider from '@material-ui/core/Divider';
+import Button from '@material-ui/core/Button';
 
 class Result extends Component {
   constructor(props) {
     super(props);
-    this.Data = this.Data.bind(this);
-    this.handleYFrag = this.handleYFrag.bind(this);
-    this.handleYDmg = this.handleYDmg.bind(this);
-    this.handleYSpot = this.handleYSpot.bind(this);
-    this.handleYDef = this.handleYDef.bind(this);
-    this.handleYWin = this.handleYWin.bind(this);
+    this.Data = this.Data.bind(this)
+    this.handleYFrag = this.handleYFrag.bind(this)
+    this.handleYDmg = this.handleYDmg.bind(this)
+    this.handleYSpot = this.handleYSpot.bind(this)
+    this.handleYDef = this.handleYDef.bind(this)
+    this.handleYWin = this.handleYWin.bind(this)
+    this.clickAvgValue = this.clickAvgValue.bind(this)
+    
 
-    this.state = {yDmg: 0.00, ySpot: 0.00, yFrag: 0.00, yDef: 0.00, yWin: 0.00};
+    this.state = {
+      yDmg: 0.00,
+      ySpot: 0.00,
+      yFrag: 0.00,
+      yDef: 0.00,
+      yWin: 0.00,
+      developerMode: false      
+    };
 
   }
 
@@ -34,24 +48,39 @@ class Result extends Component {
     return dat;
   }
 
+  clickAvgValue() {
+
+    let data = this.Data()
+    
+    this.setState({
+      yFrag: data[3],
+      yDmg: data[1],
+      ySpot: data[4],
+      yDef: data[2],
+      yWin: data[5],
+      
+    })
+    this.forceUpdate();
+  }
+  
   handleYFrag (e) {
-    this.setState({yFrag: e.target.value})
+    this.setState({yFrag: e.target.value, clickKill: e.target.value})
   }
 
   handleYDmg (e) {
-    this.setState({yDmg: e.target.value})
+    this.setState({yDmg: e.target.value, clickDmg: e.target.value})
   }
 
   handleYSpot (e) {
-    this.setState({ySpot: e.target.value})
+    this.setState({ySpot: e.target.value, clickSpot: e.target.value})
   }
 
   handleYDef (e) {
-    this.setState({yDef: e.target.value})
+    this.setState({yDef: e.target.value, clickDef: e.target.value})
   }
 
   handleYWin (e) {
-    this.setState({yWin: e.target.value})
+    this.setState({yWin: e.target.value, clickWin: e.target.value})
   }
 
   returnStep1(expValue, yValue) {
@@ -132,8 +161,10 @@ class Result extends Component {
 
 
   render() {
-
-
+    
+    const handleSwitch = name => event => {
+      this.setState({  [name]: event.target.checked });
+    };
 
     var s = this.Data();
     if(s[3]== null){s[3]=0;s[1]=0;s[2]=0;s[4]=0;s[5]=0;}
@@ -165,97 +196,110 @@ class Result extends Component {
       background: Wcolor,
     }
 
-
+    const devMode = this.state.developerMode;
+    let dev;
+      
+      if( devMode )
+      {
+        dev = <table className="w3-table w3-border w3-centered w3-bordered w3-margin-top">
+                    <thead className="w3-tiny">
+                      <tr><th className="text-center">expFrag</th>
+                          <th className="text-center">expDMG</th>
+                          <th className="text-center">expSpot</th>
+                          <th className="text-center">expDef</th>
+                          <th className="text-center">expWin</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{s[3]}</td>
+                        <td>{s[1]}</td>
+                        <td>{s[4]}</td>
+                        <td>{s[2]}</td>
+                        <td>{s[5]}</td>
+                      </tr>
+                    </tbody>
+                    <thead className="w3-tiny">
+                    <tr><th className="text-center">rFrag</th>
+                        <th className="text-center">rDMG</th>
+                        <th className="text-center">rSpot</th>
+                        <th className="text-center">rDef</th>
+                        <th className="text-center">rWin</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{this.returnStep1(s[3],this.state.yFrag)}</td>
+                      <td>{this.returnStep1(s[1],this.state.yDmg)}</td>
+                      <td>{this.returnStep1(s[4],this.state.ySpot)}</td>
+                      <td>{this.returnStep1(s[2],this.state.yDef)}</td>
+                      <td>{this.returnStep1(s[5],this.state.yWin)}</td>
+                    </tr>
+                  </tbody>
+                  <thead className="w3-tiny">
+                    <tr><th className="text-center">rFragc</th>
+                        <th className="text-center">rDamagec</th>
+                        <th className="text-center">rSpotc</th>
+                        <th className="text-center">rDefc</th>
+                        <th className="text-center">rWinc</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{rFragc}</td>
+                      <td>{rDMGc}</td>
+                      <td>{rSpotc}</td>
+                      <td>{rDefc}</td>
+                      <td>{rWinc}</td>
+                    </tr>
+                  </tbody>
+                </table>
+    }
+    else{
+      dev = ''
+    }
 
     return (
-
+      
 
       <div>
-        <div className="w3-row-padding w3-center">
+        <div className="w3-row-padding w3-center w3-margin-bottom">
           <div className="w3-col l1 w3-hide-small"> .</div>
-          <div className="w3-col l2"> <label>Frag /Kills/ </label>
-            <input type="text" className="w3-input w3-round w3-border" onChange={this.handleYFrag}/>
+          <div className="w3-col l2"><label>Frag /Kills/ </label>
+            <input type="text" className="w3-input w3-round w3-border" onChange={this.handleYFrag} value={this.state.yFrag}/>
           </div>
 
-          <div className="w3-col l2"> <label>Damage</label>
-            <input type="text" className="w3-input w3-round w3-border" onChange={this.handleYDmg}/>
+          <div className="w3-col l2"><label>Damage</label>
+            <input type="text" className="w3-input w3-round w3-border" onChange={this.handleYDmg} value={this.state.yDmg}/>
           </div>
 
-          <div className="w3-col l2"> <label>Spot</label>
-            <input type="text" className="w3-input w3-round w3-border" onChange={this.handleYSpot}/>
+          <div className="w3-col l2"><label>Spot</label>
+            <input type="text" className="w3-input w3-round w3-border" onChange={this.handleYSpot} value={this.state.ySpot}/>
           </div>
 
-          <div className="w3-col l2"> <label>Def</label>
-            <input type="text" className="w3-input w3-round w3-border" onChange={this.handleYDef}/>
+          <div className="w3-col l2"><label>Def</label>
+            <input type="text" className="w3-input w3-round w3-border" onChange={this.handleYDef} value={this.state.yDef}/>
           </div>
 
-          <div className="w3-col l2"> <label>Win</label>
-            <input type="text" className="w3-input w3-round w3-border" onChange={this.handleYWin}/>
+          <div className="w3-col l2"><label>Win</label>
+            <input type="text" className="w3-input w3-round w3-border" onChange={this.handleYWin} value={this.state.yWin}/>
           </div>
         </div>
+        <Divider variant="fullWidth" component="hr" />
+        <div className="w3-padding">
+        <FormGroup row>
+          <FormControlLabel
+            control={
+              <Switch checked={this.state.developerMode} onChange={handleSwitch('developerMode')} color="default" size="medium" />
+            }
+          label="Developer mode"  />   
+          <Button variant="contained" onClick={this.clickAvgValue}>Load average value</Button>       
+        </FormGroup>
+        </div>
+       
+        <Divider variant="fullWidth" component="hr"/>
+        {dev}
 
-        <hr />
-
-
-          <table className="w3-table w3-border w3-centered w3-bordered">
-            <thead className="w3-tiny">
-              <tr><th className="text-center">expFrag</th>
-                  <th className="text-center">expDMG</th>
-                  <th className="text-center">expSpot</th>
-                  <th className="text-center">expDef</th>
-                  <th className="text-center">expWin</th></tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{s[3]}</td>
-                <td>{s[1]}</td>
-                <td>{s[4]}</td>
-                <td>{s[2]}</td>
-                <td>{s[5]}</td>
-              </tr>
-            </tbody>
-            <thead className="w3-tiny">
-            <tr><th className="text-center">rFrag</th>
-                <th className="text-center">rDMG</th>
-                <th className="text-center">rSpot</th>
-                <th className="text-center">rDef</th>
-                <th className="text-center">rWin</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{this.returnStep1(s[3],this.state.yFrag)}</td>
-              <td>{this.returnStep1(s[1],this.state.yDmg)}</td>
-              <td>{this.returnStep1(s[4],this.state.ySpot)}</td>
-              <td>{this.returnStep1(s[2],this.state.yDef)}</td>
-              <td>{this.returnStep1(s[5],this.state.yWin)}</td>
-            </tr>
-          </tbody>
-          <thead className="w3-tiny">
-            <tr><th className="text-center">rFragc</th>
-                <th className="text-center">rDamagec</th>
-                <th className="text-center">rSpotc</th>
-                <th className="text-center">rDefc</th>
-                <th className="text-center">rWinc</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{rFragc}</td>
-              <td>{rDMGc}</td>
-              <td>{rSpotc}</td>
-              <td>{rDefc}</td>
-              <td>{rWinc}</td>
-            </tr>
-          </tbody>
-        </table>
-
-
-
-
-
-
-      <div className="w3-row" style={WN8Style}>
+      <div className="w3-row w3-margin-top" style={WN8Style}>
         <div className="w3-center">
-          Value of WN8: <span>{WN8} </span>
+          <h2><strong>{WN8}</strong></h2>
         </div>
       </div>
 

@@ -5,13 +5,14 @@ import Result from './Result'
 
 class App extends Component {
   constructor(props) {
-    super(props);
-    this.state = {tanks: 'aa', etvdata: 'ss', tank_id: '',etv_tank: ''};
-    this.GetETVtable = this.GetETVtable.bind(this);    
-    this.GetETVtable();
+    super(props)
+    this.state = {tanks: '', etvdata: 'ss', tank_id: '',etv_tank: '', tankPicture_url: ''}
+    this.GetETVtable = this.GetETVtable.bind(this)
+    this.GetETVtable()
     
-    this.handleTankId = this.handleTankId.bind(this);
-    this.handleETVTank = this.handleETVTank.bind(this);
+    this.handleTankId = this.handleTankId.bind(this)
+    this.handleETVTank = this.handleETVTank.bind(this)
+    this.handleTankPicture = this.handleTankPicture.bind(this)
   }
 
 
@@ -31,6 +32,11 @@ class App extends Component {
     this.setState({tank_id: id});
   }
 
+  handleTankPicture(tank) {        
+    this.setState({tankPicture_url: tank})
+  }
+
+
   handleETVTank(data) {
     this.setState({etv_tank: data});
   }
@@ -38,11 +44,6 @@ class App extends Component {
 
 
   render() {
-
-    var pictureHeight = {
-      marginTop: "10px",
-      height: "130px",
-    };
 
     return (
       <div className="w3-container w3-center">
@@ -52,11 +53,11 @@ class App extends Component {
         
         <div className="w3-row-padding">
           <div className="col-sm-6 w3-padding w3-card w3-margin-bottom ">
-            <Calculator tanks={this.state.tanks}  etv={this.state.etvdata} onFindTankId={this.handleTankId} onFindETV={this.handleETVTank}/>
+            <Calculator tanks={this.state.tanks}  etv={this.state.etvdata} onFindTankId={this.handleTankId} onFindETV={this.handleETVTank} onFindTankPicture={ this.handleTankPicture }/>
           </div>
           <div className="w3-row-padding w3-card w3-margin-bottom">
               <div className="w3-container w3-padding w3-image">
-                <Picture tanks={this.state.tanks} id={this.state.tank_id}/>
+                <Picture picture_url={this.state.tankPicture_url}/>
             </div>
           </div>
           <div className="w3-row-padding w3-card w3-padding">

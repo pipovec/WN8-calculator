@@ -62,15 +62,22 @@ handleTank(e) {
   var t = this.Data();
   this.setState({tank_id: e.target.value})
   this.props.onFindTankId(e.target.value)
+  
+  for(var value in this.state.tanks) {
+    if(this.state.tanks[value].tank_id === parseInt(e.target.value,10))
+    this.props.onFindTankPicture( this.state.tanks[value].big_icon )  
+  }
+  
   this.props.onFindETV(t)
-
-
 }
+
+
+
 
   render() {
 
     const levels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    var Tanks = <option key='' value=''>  </option>
+    var Tanks = <option key='' value=''> Loading data ... </option>
     
     const LevelsItem = levels.map((levels)=>
       <option key={levels} value={levels}> {levels} </option>
@@ -110,6 +117,7 @@ handleTank(e) {
             <div className="w3-third">
             <label>Tank</label>
               <select  value={this.state.tank_id} onChange={this.handleTank} className="w3-select" input="tank">
+              <option defaultValue="0" >Choose your tank</option>
                 {Tanks}
                 </select>
             </div>
