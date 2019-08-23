@@ -91,7 +91,7 @@ handleTank(e) {
     }    
     
     return (
-      <div className="w3-row-padding">
+      <div className="w3-row-padding w3-padding">
 
             {/* Vyber level tankov */}
             <div className="w3-third">

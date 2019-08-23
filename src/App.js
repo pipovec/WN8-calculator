@@ -6,7 +6,7 @@ import Result from './Result'
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = {tanks: '', etvdata: 'ss', tank_id: '',etv_tank: '', tankPicture_url: ''}
+    this.state = {tanks: '', etvdata: 'ss', tank_id: '',etv_tank: '', tankPicture_url: '', pictureHeight : { minHeight: "116x"}}
     this.GetETVtable = this.GetETVtable.bind(this)
     this.GetETVtable()
     
@@ -41,10 +41,10 @@ class App extends Component {
     this.setState({etv_tank: data});
   }
 
-
+  
 
   render() {
-
+    
     return (
       <div className="w3-container w3-center">
           <h3>WN8 online calculator</h3>
@@ -52,14 +52,15 @@ class App extends Component {
           
         
         <div className="w3-row-padding">
-          <div className="col-sm-6 w3-padding w3-card w3-margin-bottom ">
+          <div className="col-sm-6 w3-card w3-margin-bottom ">
             <Calculator tanks={this.state.tanks}  etv={this.state.etvdata} onFindTankId={this.handleTankId} onFindETV={this.handleETVTank} onFindTankPicture={ this.handleTankPicture }/>
           </div>
-          <div className="w3-row-padding w3-card w3-margin-bottom">
-              <div className="w3-container w3-padding w3-image">
-                <Picture picture_url={this.state.tankPicture_url}/>
+          
+          <div className="w3-rowpadding w3-card w3-margin-bottom >
+              <div className="w3-container w3-padding>
+                <Picture picture_url={this.state.tankPicture_url} />
             </div>
-          </div>
+          
           <div className="w3-row-padding w3-card w3-padding">
                 <Result etv_tank={this.state.etvdata} id={this.state.tank_id}/>
           </div>

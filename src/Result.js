@@ -4,6 +4,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import TextField from '@material-ui/core/TextField';
+
 
 class Result extends Component {
   constructor(props) {
@@ -259,29 +262,71 @@ class Result extends Component {
     return (
       
 
-      <div>
-        <div className="w3-row-padding w3-center w3-margin-bottom">
-          <div className="w3-col l1 w3-hide-small"> .</div>
-          <div className="w3-col l2"><label>Frag /Kills/ </label>
-            <input type="text" className="w3-input w3-round w3-border" onChange={this.handleYFrag} value={this.state.yFrag}/>
+      <div>        
+        <div className="w3-cell-row">
+          
+          <div className="w3-padding w3-cell w3-mobile">            
+              <TextField
+              onChange={this.handleYFrag} value={this.state.yFrag}
+              id="outlined-simple-start-adornment"        
+              variant="outlined"
+              label="Frags /Kills/ "
+              InputProps={{
+                startAdornment: <InputAdornment position="start"></InputAdornment>,
+              }}
+              />
           </div>
 
-          <div className="w3-col l2"><label>Damage</label>
-            <input type="text" className="w3-input w3-round w3-border" onChange={this.handleYDmg} value={this.state.yDmg}/>
+          <div className="w3-padding w3-cell w3-mobile">
+            <TextField
+            onChange={this.handleYDmg} value={this.state.yDmg}
+            id="outlined-simple-start-adornment"        
+            variant="outlined"
+            label="Damage dealt"
+            InputProps={{
+              startAdornment: <InputAdornment position="start"></InputAdornment>,
+            }}
+            />
           </div>
 
-          <div className="w3-col l2"><label>Spot</label>
-            <input type="text" className="w3-input w3-round w3-border" onChange={this.handleYSpot} value={this.state.ySpot}/>
+          <div className="w3-padding w3-cell w3-mobile">
+            <TextField
+            onChange={this.handleYSpot} value={this.state.ySpot}
+            id="outlined-simple-start-adornment"        
+            variant="outlined"
+            label="Enemies spotted"
+            InputProps={{
+              startAdornment: <InputAdornment position="start"></InputAdornment>,
+            }}
+            />        
           </div>
 
-          <div className="w3-col l2"><label>Def</label>
-            <input type="text" className="w3-input w3-round w3-border" onChange={this.handleYDef} value={this.state.yDef}/>
+          <div className="w3-padding w3-cell w3-mobile">
+            <TextField
+            onChange={this.handleYDef} value={this.state.yDef}
+            id="outlined-simple-start-adornment"        
+            variant="outlined"
+            label="Dropped capture points"
+            InputProps={{
+              startAdornment: <InputAdornment position="start"></InputAdornment>,
+            }}
+            />
           </div>
 
-          <div className="w3-col l2"><label>Win</label>
-            <input type="text" className="w3-input w3-round w3-border" onChange={this.handleYWin} value={this.state.yWin}/>
+          <div className="w3-padding w3-cell w3-mobile">
+            <TextField
+            onChange={this.handleYWin} value={this.state.yWin}
+            id="outlined-simple-start-adornment"        
+            variant="outlined"
+            label="Winrate"
+            InputProps={{
+              startAdornment: <InputAdornment position="start"></InputAdornment>,
+            }}
+            />            
           </div>
         </div>
+        
+        
         <Divider variant="fullWidth" component="hr" />
         <div className="w3-padding">
         <FormGroup row>
