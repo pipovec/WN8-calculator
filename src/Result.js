@@ -181,18 +181,29 @@ class Result extends Component {
 
     var Wcolor = 'red';
 
-    if(WN8 <= 430) {
-      Wcolor = 'red';
-    } else if (WN8 <= 965) {
-      Wcolor = '#ebd09e';
-    } else if (WN8 <= 1562) {
-      Wcolor = 'yellow';
-    } else if (WN8 <= 2349) {
-      Wcolor = '#9dc39d';
-    } else if (WN8 <= 3158) {
-      Wcolor = '#afdfdb';
-    } else if (WN8 > 3158) {
-      Wcolor = '#e4c3e4';
+
+    if(WN8 <= 449) {
+      Wcolor = 'grey';
+    } else if (WN8 >= 450 && WN8 < 649.99) {
+      Wcolor = '#e5000';
+    } else if (WN8 >= 650 && WN8 < 849.99) {
+      Wcolor = '#cd3333';
+    } else if (WN8 >= 850 && WN8 < 1049.99) {
+      Wcolor = '#d77900';
+    } else if (WN8 >= 1050 && WN8 < 1249.99) {
+      Wcolor = '#d7B600';
+    } else if (WN8 >= 1250 && WN8 < 1399.99) {
+      Wcolor = '#6d9251';
+    }else if (WN8 >= 1400 && WN8 < 1599.99) {
+      Wcolor = '#4c762e';
+    } else if (WN8 >= 1600 && WN8 < 1999.99) {
+      Wcolor = '#46a892';
+    } else if (WN8 >= 2000 && WN8 < 2449.99) {
+      Wcolor = '#4a92b7';
+    } else if (WN8 >= 2450 && WN8 < 2849.99) {
+      Wcolor = '#83579d';
+    } else if (WN8 >= 2850 ) {
+      Wcolor = '#5a3175';
     }
 
     var WN8Style = {
@@ -332,7 +343,7 @@ class Result extends Component {
         <FormGroup row>
           <FormControlLabel
             control={
-              <Switch checked={this.state.developerMode} onChange={handleSwitch('developerMode')} color="default" size="medium" />
+              <Switch checked={this.state.developerMode} onChange={handleSwitch('developerMode')} Wcolor="default" size="medium" />
             }
           label="Developer mode"  />   
           <Button variant="contained" onClick={this.clickAvgValue}>Load average value</Button>       
