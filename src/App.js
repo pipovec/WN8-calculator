@@ -47,7 +47,7 @@ class App extends Component {
     
     return (
       <div className="w3-container w3-center">
-          <h3>WN8 online calculator</h3>
+          <h1>WN8 online calculator</h1>
           <p>I am using Expected Tank Values from server <a href="https://modxvm.com/en/wn8-expected-values/">XVM</a></p>
           
         

@@ -1,4 +1,10 @@
 import React, { Component } from 'react';
+import NativeSelect from '@material-ui/core/NativeSelect';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+
+
 
 class Calculator extends Component {
   constructor(props) {
@@ -10,6 +16,7 @@ class Calculator extends Component {
     this.Data = this.Data.bind(this)
     this.SendRequest = this.SendRequest.bind(this)
   }
+
 
   Data() {
     var data = this.props.etv.data;
@@ -79,9 +86,6 @@ handleTank(e) {
     const levels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     var Tanks = <option key='' value=''> Loading data ... </option>
     
-    const LevelsItem = levels.map((levels)=>
-      <option key={levels} value={levels}> {levels} </option>
-    );
 
     if(this.state.tanks.length > 0)
     {
@@ -95,31 +99,54 @@ handleTank(e) {
 
             {/* Vyber level tankov */}
             <div className="w3-third">
-            <label>Level</label>
-            <select  value={this.state.level} onChange={this.handleLevel} type="number" className="w3-select" id="level">
-              {LevelsItem}
-            </select>
+              <FormControl fullWidth='true'>
+                <InputLabel shrink>
+                    Level
+                </InputLabel>
+                  <NativeSelect
+                    onChange={this.handleLevel}
+                    name='Level'
+                    inputProps={{
+                      id: 'select-native',
+                      'aria-label':'Level'                 
+                    }}
+                    >
+                    {levels.map(name => (
+                      <option key={name} value={name}>
+                        {name}
+                      </option>
+                    ))}
+                  </NativeSelect>
+                </FormControl>
             </div>
 
             {/* Vyber typy tankov */}
             <div className="w3-third">
-            <label>Type of tank</label>
-            <select  value={this.state.select} onChange={this.handleType} className="w3-select" id="kind">
-              <option value="mediumTank">mediumTank</option>
-              <option value="heavyTank">heavyTank</option>
-              <option value="lightTank">lightTank</option>
-              <option value="AT-SPG">TD</option>
-              <option value="SPG">SPG</option>
-            </select>
+              <FormControl fullWidth='true'>
+                <InputLabel shrink>
+                  Type
+                </InputLabel>
+                <NativeSelect onChange={this.handleType} >
+                  <option value="mediumTank">mediumTank</option>
+                  <option value="heavyTank">heavyTank</option>
+                  <option value="lightTank">lightTank</option>
+                  <option value="AT-SPG">TD</option>
+                  <option value="SPG">SPG</option>
+                </NativeSelect>              
+              </FormControl>             
             </div>
 
             {/* Vyber konkretneho tanku */}
             <div className="w3-third">
-            <label>Tank</label>
-              <select  value={this.state.tank_id} onChange={this.handleTank} className="w3-select" input="tank">
-              <option defaultValue="0" >Choose your tank</option>
+              <FormControl fullWidth='true'>
+                <InputLabel shrink>
+                  Tank
+                </InputLabel>
+              </FormControl>
+              <NativeSelect onChange={this.handleTank}>
+                <option defaultValue="0" >Choose your tank</option>
                 {Tanks}
-                </select>
+              </NativeSelect>
             </div>
       </div>
 
