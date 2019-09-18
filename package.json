@@ -1,6 +1,6 @@
 {
   "name": "wn8calculator",
-  "version": "0.1.5",
+  "version": "2.0.0",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.4.2",
