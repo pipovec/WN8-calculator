@@ -99,17 +99,13 @@ handleTank(e) {
 
             {/* Vyber level tankov */}
             <div className="w3-third">
-              <FormControl fullWidth='true'>
+              <FormControl fullWidth='true' margin='dense' variant='outlined'>
                 <InputLabel shrink>
                     Level
                 </InputLabel>
                   <NativeSelect
                     onChange={this.handleLevel}
-                    name='Level'
-                    inputProps={{
-                      id: 'select-native',
-                      'aria-label':'Level'                 
-                    }}
+                    name='Level'                    
                     >
                     {levels.map(name => (
                       <option key={name} value={name}>
@@ -122,7 +118,7 @@ handleTank(e) {
 
             {/* Vyber typy tankov */}
             <div className="w3-third">
-              <FormControl fullWidth='true'>
+              <FormControl fullWidth='true' margin='dense' variant='outlined'>
                 <InputLabel shrink>
                   Type
                 </InputLabel>
@@ -138,15 +134,15 @@ handleTank(e) {
 
             {/* Vyber konkretneho tanku */}
             <div className="w3-third">
-              <FormControl fullWidth='true'>
+              <FormControl fullWidth='true' margin='dense' variant='outlined'>
                 <InputLabel shrink>
                   Tank
-                </InputLabel>
-              </FormControl>
-              <NativeSelect onChange={this.handleTank}>
-                <option defaultValue="0" >Choose your tank</option>
+                </InputLabel>              
+              <NativeSelect onChange={this.handleTank} >
+                <option defaultValue="0">Choose your tank</option>
                 {Tanks}
               </NativeSelect>
+              </FormControl>
             </div>
       </div>
 
