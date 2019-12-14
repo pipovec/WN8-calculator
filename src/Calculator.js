@@ -1,10 +1,7 @@
-import React, { Component } from 'react';
-import NativeSelect from '@material-ui/core/NativeSelect';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-
-
+import React, { Component } from 'react'
+import NativeSelect from '@material-ui/core/NativeSelect'
+import FormControl from '@material-ui/core/FormControl'
+import InputLabel from '@material-ui/core/InputLabel'
 
 class Calculator extends Component {
   constructor(props) {
@@ -78,9 +75,6 @@ handleTank(e) {
   this.props.onFindETV(t)
 }
 
-
-
-
   render() {
 
     const levels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -108,7 +102,7 @@ handleTank(e) {
                     name='Level'                    
                     >
                     {levels.map(name => (
-                      <option key={name} value={name}>
+                      <option  key={name} value={name} selected> 
                         {name}
                       </option>
                     ))}
@@ -138,7 +132,9 @@ handleTank(e) {
                 <InputLabel shrink>
                   Tank
                 </InputLabel>              
-              <NativeSelect onChange={this.handleTank} >
+              <NativeSelect
+               onChange={this.handleTank} 
+              >
                 <option defaultValue="0">Choose your tank</option>
                 {Tanks}
               </NativeSelect>
