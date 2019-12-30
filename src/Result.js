@@ -4,7 +4,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 
 
@@ -274,17 +273,14 @@ class Result extends Component {
       
 
       <div>        
-        <div className="w3-cell-row">
-          
+        <div className="w3-cell-row">          
           <div className="w3-padding w3-cell w3-mobile">            
               <TextField
               onChange={this.handleYFrag} value={this.state.yFrag}
               id="outlined-simple-start-adornment"        
               variant="outlined"
               label="Frags /Kills/ "
-              InputProps={{
-                startAdornment: <InputAdornment position="start"></InputAdornment>,
-              }}
+              
               />
           </div>
 
@@ -293,10 +289,7 @@ class Result extends Component {
             onChange={this.handleYDmg} value={this.state.yDmg}
             id="outlined-simple-start-adornment"        
             variant="outlined"
-            label="Damage dealt"
-            InputProps={{
-              startAdornment: <InputAdornment position="start"></InputAdornment>,
-            }}
+            label="Damage dealt"            
             />
           </div>
 
@@ -305,10 +298,7 @@ class Result extends Component {
             onChange={this.handleYSpot} value={this.state.ySpot}
             id="outlined-simple-start-adornment"        
             variant="outlined"
-            label="Enemies spotted"
-            InputProps={{
-              startAdornment: <InputAdornment position="start"></InputAdornment>,
-            }}
+            label="Enemies spotted"            
             />        
           </div>
 
@@ -317,10 +307,7 @@ class Result extends Component {
             onChange={this.handleYDef} value={this.state.yDef}
             id="outlined-simple-start-adornment"        
             variant="outlined"
-            label="Dropped capture points"
-            InputProps={{
-              startAdornment: <InputAdornment position="start"></InputAdornment>,
-            }}
+            label="Dropped capture points"            
             />
           </div>
 
@@ -329,10 +316,7 @@ class Result extends Component {
             onChange={this.handleYWin} value={this.state.yWin}
             id="outlined-simple-start-adornment"        
             variant="outlined"
-            label="Winrate"
-            InputProps={{
-              startAdornment: <InputAdornment position="start"></InputAdornment>,
-            }}
+            label="Winrate"            
             />            
           </div>
         </div>
@@ -343,7 +327,7 @@ class Result extends Component {
         <FormGroup row>
           <FormControlLabel
             control={
-              <Switch checked={this.state.developerMode} onChange={handleSwitch('developerMode')} Wcolor="default" size="medium" />
+              <Switch checked={this.state.developerMode} onChange={handleSwitch('developerMode')} wcolor="default" size="medium" />
             }
           label="Developer mode"  />   
           <Button variant="contained" onClick={this.clickAvgValue}>Load average value</Button>       

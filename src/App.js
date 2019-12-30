@@ -6,7 +6,7 @@ import Result from './Result'
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = {tanks: '', etvdata: 'ss', tank_id: '',etv_tank: '', tankPicture_url: '', pictureHeight : { minHeight: "116x"}}
+    this.state = {tanks: '', etvdata: false, tank_id: '',etv_tank: '', tankPicture_url: '', pictureHeight : { minHeight: "116x"}}
     this.GetETVtable = this.GetETVtable.bind(this)
     this.GetETVtable()
     
@@ -43,21 +43,29 @@ class App extends Component {
 
   
 
-  render() {
-    
+  render() { 
+    let url
+    let version   
+
+    if (this.state.etvdata)
+    {     
+     version = this.state.etvdata.header.version
+     url = this.state.etvdata.header.url
+    }
+
     return (
       <div className="w3-container w3-center">
           <h1>WN8 online calculator</h1>
-          <p>I am using Expected Tank Values from server <a href="https://modxvm.com/en/wn8-expected-values/">XVM</a></p>
-          
-        
+          <p>I am using Expected Tank Values from server 
+            <a href={url}> XVM </a> version {version}
+          </p>                
         <div className="w3-row-padding">
           <div className="col-sm-6 w3-card w3-margin-bottom ">
             <Calculator tanks={this.state.tanks}  etv={this.state.etvdata} onFindTankId={this.handleTankId} onFindETV={this.handleETVTank} onFindTankPicture={ this.handleTankPicture }/>
           </div>
           
-          <div className="w3-rowpadding w3-card w3-margin-bottom >
-              <div className="w3-container w3-padding>
+          <div className="w3-rowpadding w3-card w3-margin-bottom">
+              <div className="w3-container w3-padding">
                 <Picture picture_url={this.state.tankPicture_url} />
             </div>
           
@@ -66,8 +74,7 @@ class App extends Component {
           </div>
         </div>
       </div>
-
-
+      </div>
     );
   }
 }

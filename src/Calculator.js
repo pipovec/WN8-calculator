@@ -76,11 +76,8 @@ handleTank(e) {
 }
 
   render() {
-
-    const levels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     var Tanks = <option key='' value=''> Loading data ... </option>
     
-
     if(this.state.tanks.length > 0)
     {
       Tanks = this.state.tanks.map( (tank) => 
@@ -90,29 +87,34 @@ handleTank(e) {
     
     return (
       <div className="w3-row-padding w3-padding">
-
             {/* Vyber level tankov */}
             <div className="w3-third">
-              <FormControl fullWidth='true' margin='dense' variant='outlined'>
+              <FormControl fullWidth={true} margin='dense' variant='outlined'>
                 <InputLabel shrink>
                     Level
                 </InputLabel>
                   <NativeSelect
                     onChange={this.handleLevel}
-                    name='Level'                    
+                    name='Level' 
+                    value={10}                   
                     >
-                    {levels.map(name => (
-                      <option  key={name} value={name} selected> 
-                        {name}
-                      </option>
-                    ))}
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
                   </NativeSelect>
                 </FormControl>
             </div>
 
             {/* Vyber typy tankov */}
             <div className="w3-third">
-              <FormControl fullWidth='true' margin='dense' variant='outlined'>
+              <FormControl fullWidth={true} margin='dense' variant='outlined'>
                 <InputLabel shrink>
                   Type
                 </InputLabel>
@@ -128,7 +130,7 @@ handleTank(e) {
 
             {/* Vyber konkretneho tanku */}
             <div className="w3-third">
-              <FormControl fullWidth='true' margin='dense' variant='outlined'>
+              <FormControl fullWidth={true} margin='dense' variant='outlined'>
                 <InputLabel shrink>
                   Tank
                 </InputLabel>              

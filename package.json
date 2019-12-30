@@ -10,7 +10,7 @@
     "w3-css": "^4.1.0"
   },
   "devDependencies": {
-    "react-scripts": "1.0.17"
+    "react-scripts": "^3.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
