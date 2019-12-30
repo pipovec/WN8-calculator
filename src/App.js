@@ -74,6 +74,7 @@ class App extends Component {
           </div>
         </div>
       </div>
+      <p>the source code is freely available on <a href="https://github.com/pipovec/WN8-calculator">github</a></p>
       </div>
     );
   }

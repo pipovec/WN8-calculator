@@ -96,7 +96,7 @@ handleTank(e) {
                   <NativeSelect
                     onChange={this.handleLevel}
                     name='Level' 
-                    value={10}                   
+                    defaultValue={10}                   
                     >
                     <option value="1">1</option>
                     <option value="2">2</option>
