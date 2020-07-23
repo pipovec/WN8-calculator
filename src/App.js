@@ -17,7 +17,7 @@ class App extends Component {
 
 
   async GetETVtable () {
-    await fetch('http://localhost:8000/expected-value')
+    await fetch(process.env.REACT_APP_API_URL+'/expected-value')
         .then(response => {
           return response.json();
         }).then( json => {

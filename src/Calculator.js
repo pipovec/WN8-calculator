@@ -42,7 +42,7 @@ componentDidMount() {
 
 
 async SendRequest(level, type) {
-  var url = 'http://localhost:8000/encyclopedia/level/'+level+'/type/'+type
+  var url = process.env.REACT_APP_API_URL+'/encyclopedia/level/'+level+'/type/'+type
 
   await fetch(url)
   .then( response => {
