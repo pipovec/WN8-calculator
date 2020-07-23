@@ -35,14 +35,14 @@ class Result extends Component {
     var data = this.props.etv_tank.data;
     var dat = [];
     for(const prop in this.props.etv_tank.data)  {
-      if(parseInt(data[prop].IDNum,10 ) === parseInt(this.props.id,10))
+      if(parseInt(data[prop].tank_id,10 ) === parseInt(this.props.id,10))
       {
-        dat[0] = data[prop].IDNum;
-        dat[1] = data[prop].expDamage;
-        dat[2] = data[prop].expDef;
-        dat[3] = data[prop].expFrag;
-        dat[4] = data[prop].expSpot;
-        dat[5] = data[prop].expWinRate;
+        dat[0] = data[prop].tank_id;
+        dat[1] = data[prop].dmg;
+        dat[2] = data[prop].def;
+        dat[3] = data[prop].frag;
+        dat[4] = data[prop].spot;
+        dat[5] = data[prop].win;
       }
 
     }
@@ -175,7 +175,7 @@ class Result extends Component {
     var rWinc  = this.returnrWINc(s[5],this.state.yWin);
     var rSpotc = this.returnrSPOTc(s[4],this.state.ySpot,rDMGc);
     var rDefc  = this.returnrDEFc(s[2],this.state.yDef,rDMGc);
-    var WN8 = 980*rDMGc + 210*rDMGc*rFragc + 155*rFragc*rSpotc + 75*rDefc*rFragc + 145*Math.min(1.8,rWinc);
+    var WN8 = (980*rDMGc) + (210*rDMGc*rFragc) + (155*rFragc*rSpotc) + (75*rDefc*rFragc) + (145*Math.min(1.8,rWinc));
     WN8 = WN8.toFixed(2);
 
     var Wcolor = 'red';

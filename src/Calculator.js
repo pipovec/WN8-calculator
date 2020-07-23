@@ -17,16 +17,18 @@ class Calculator extends Component {
 
   Data() {
     var data = this.props.etv.data;
+
     var dat = [];
     for(const prop in data)  {
-      if( parseInt(data[prop].IDNum,10) === parseInt(this.state.tank_id,10)) {
 
-        dat[0]  = parseFloat(data[prop].expDamage);
-        dat[1]  = parseFloat(data[prop].expDef);
-        dat[2]  = parseFloat(data[prop].expFrag);
-        dat[3]  = parseFloat(data[prop].expSpot);
-        dat[4]  = parseFloat(data[prop].expWinRate);
-
+      if( parseInt(data[prop].tank_id,10) === parseInt(this.state.tank_id,10)) {
+        console.log(data[prop]);
+        dat[0]  = parseFloat(data[prop].dmg);
+        dat[1]  = parseFloat(data[prop].def);
+        dat[2]  = parseFloat(data[prop].frag);
+        dat[3]  = parseFloat(data[prop].spot);
+        dat[4]  = parseFloat(data[prop].win);
+      console.log(dat);
       }
 
     }
@@ -39,15 +41,15 @@ componentDidMount() {
 }
 
 
-SendRequest(level, type) {
-  var url = 'https://fpcstat.cz/api/vehicles/level/'+level+'/type/'+type
+async SendRequest(level, type) {
+  var url = 'http://localhost:8000/encyclopedia/level/'+level+'/type/'+type
 
-  fetch(url)
+  await fetch(url)
   .then( response => {
     return response.json()
   })
   .then( json => {    
-    this.setState({tanks: json.data})    
+    this.setState({tanks: json})
   })
 
 }

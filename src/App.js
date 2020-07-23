@@ -16,16 +16,13 @@ class App extends Component {
   }
 
 
-  GetETVtable () {    
-    var url = "https://static.modxvm.com/wn8-data-exp/json/wn8exp.json"
-    var xhr = new XMLHttpRequest();
-    xhr.onload = function() {
-      var jsondata = xhr.responseText;
-      this.setState({etvdata: JSON.parse(jsondata)});
-    }.bind(this);
-
-    xhr.open('GET', url , true);
-    xhr.send();
+  async GetETVtable () {
+    await fetch('http://localhost:8000/expected-value')
+        .then(response => {
+          return response.json();
+        }).then( json => {
+          this.setState({etvdata: json['0']})
+        });
   }
 
   handleTankId(id)  {
@@ -36,12 +33,9 @@ class App extends Component {
     this.setState({tankPicture_url: tank})
   }
 
-
   handleETVTank(data) {
     this.setState({etv_tank: data});
   }
-
-  
 
   render() { 
     let url
@@ -57,24 +51,35 @@ class App extends Component {
       <div className="w3-container w3-center">
           <h1>WN8 online calculator</h1>
           <p>I am using Expected Tank Values from server 
-            <a href={url}> XVM </a> version {version}
+            <a href={url}> modxvm.com</a> version {version}
           </p>                
         <div className="w3-row-padding">
           <div className="col-sm-6 w3-card w3-margin-bottom ">
-            <Calculator tanks={this.state.tanks}  etv={this.state.etvdata} onFindTankId={this.handleTankId} onFindETV={this.handleETVTank} onFindTankPicture={ this.handleTankPicture }/>
+            <Calculator
+                tanks={this.state.tanks}
+                etv={this.state.etvdata}
+                onFindTankId={this.handleTankId}
+                onFindETV={this.handleETVTank}
+                onFindTankPicture={ this.handleTankPicture }
+            />
           </div>
           
           <div className="w3-rowpadding w3-card w3-margin-bottom">
               <div className="w3-container w3-padding">
-                <Picture picture_url={this.state.tankPicture_url} />
+                <Picture
+                    picture_url={this.state.tankPicture_url}
+                />
             </div>
           
           <div className="w3-row-padding w3-card w3-padding">
-                <Result etv_tank={this.state.etvdata} id={this.state.tank_id}/>
+                <Result
+                    etv_tank={this.state.etvdata}
+                    id={this.state.tank_id}
+                />
           </div>
         </div>
       </div>
-      <p>the source code is freely available on <a href="https://github.com/pipovec/WN8-calculator">github</a></p>
+      <p>the source code is freely available on <a href="https://github.com/pipovec/WN8-calculator">Github</a></p>
       </div>
     );
   }
