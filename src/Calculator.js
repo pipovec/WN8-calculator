@@ -4,6 +4,9 @@ import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
 
 class Calculator extends Component {
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
+    return super.shouldComponentUpdate(nextProps, nextState, nextContext);
+  }
   constructor(props) {
     super(props);
     this.state = {type: '', level: '', tank_id: '', tanks: ''}
@@ -42,7 +45,7 @@ componentDidMount() {
 
 
 async SendRequest(level, type) {
-  var url = process.env.REACT_APP_API_URL+'/encyclopedia/level/'+level+'/type/'+type
+  var url = 'http://api.fpcstat.cz/encyclopedia/level/'+level+'/type/'+type
 
   await fetch(url)
   .then( response => {
