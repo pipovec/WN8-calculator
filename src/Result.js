@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import History from './components/History';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
@@ -25,7 +26,8 @@ class Result extends Component {
       yFrag: 0.00,
       yDef: 0.00,
       yWin: 0.00,
-      developerMode: false      
+      developerMode: false,
+      showHistory: false
     };
 
   }
@@ -211,8 +213,11 @@ class Result extends Component {
 
     const devMode = this.state.developerMode;
     let dev;
+
+    const history = this.state.showHistory;
+    let his;
       
-      if( devMode )
+      if( devMode && !history)
       {
         dev = <table className="w3-table w3-border w3-centered w3-bordered w3-margin-top">
                     <thead className="w3-tiny">
@@ -266,9 +271,17 @@ class Result extends Component {
                 </table>
     }
     else{
-      dev = ''
+      dev = '';
     }
 
+     if(history && !devMode && this.props.id > 1)
+     {
+       his = <History tank_id={this.props.id}></History>
+     }
+     else
+     {
+       his = '';
+     }
     return (
       
 
@@ -327,15 +340,34 @@ class Result extends Component {
         <FormGroup row>
           <FormControlLabel
             control={
-              <Switch checked={this.state.developerMode} onChange={handleSwitch('developerMode')} wcolor="default" size="medium" />
+              <Switch
+                  checked={this.state.developerMode}
+                  disabled={this.state.showHistory}
+                  onChange={handleSwitch('developerMode')}
+                  wcolor="default"
+              />
             }
-          label="Developer mode"  />   
+          label="Developer mode"
+          />
+          <FormControlLabel
+              control={
+                <Switch
+                    disabled={this.state.developerMode}
+                    checked={this.state.showHistory}
+                    onChange={handleSwitch('showHistory')}
+
+
+                />
+              }
+              label="History"
+          />
           <Button variant="contained" onClick={this.clickAvgValue}>Load average value</Button>       
         </FormGroup>
         </div>
        
         <Divider variant="fullWidth" component="hr"/>
         {dev}
+        {his}
 
       <div className="w3-row w3-margin-top" style={WN8Style}>
         <div className="w3-center">

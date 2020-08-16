@@ -4,9 +4,8 @@ import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
 
 class Calculator extends Component {
-  shouldComponentUpdate(nextProps, nextState, nextContext) {
-    return super.shouldComponentUpdate(nextProps, nextState, nextContext);
-  }
+
+
   constructor(props) {
     super(props);
     this.state = {type: '', level: '', tank_id: '', tanks: ''}
@@ -25,13 +24,11 @@ class Calculator extends Component {
     for(const prop in data)  {
 
       if( parseInt(data[prop].tank_id,10) === parseInt(this.state.tank_id,10)) {
-        console.log(data[prop]);
         dat[0]  = parseFloat(data[prop].dmg);
         dat[1]  = parseFloat(data[prop].def);
         dat[2]  = parseFloat(data[prop].frag);
         dat[3]  = parseFloat(data[prop].spot);
         dat[4]  = parseFloat(data[prop].win);
-      console.log(dat);
       }
 
     }
@@ -45,7 +42,7 @@ componentDidMount() {
 
 
 async SendRequest(level, type) {
-  var url = 'http://api.fpcstat.cz/encyclopedia/level/'+level+'/type/'+type
+  var url = process.env.REACT_APP_API_URL + '/encyclopedia/level/'+level+'/type/'+type
 
   await fetch(url)
   .then( response => {

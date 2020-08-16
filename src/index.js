@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import 'w3-css/4/w3pro.css';
+import './css/w3.css';
 
 
 ReactDOM.render(
