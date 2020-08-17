@@ -14,13 +14,32 @@ class LineChart extends Component {
                     widths: 1,
                     curve: 'straight'
                 },
+                title: {
+                  text: this.props.name,
+                },
             },
             series: [
                 {
                     name: this.props.name,
                     data: this.props.data,
                 }
-            ]
+            ],
+            xaxis: {
+                type: 'datetime'
+            },
+        }
+    }
+    componentDidUpdate(prevProps) {
+        if(prevProps.data !== this.props.data)
+        {
+            this.setState({
+                    series: [
+                        {
+                            name: this.props.name,
+                            data: this.props.data,
+                        }
+                    ]
+            });
         }
     }
 
@@ -34,7 +53,6 @@ class LineChart extends Component {
                 type="line"
                 height="150px"
                 width="100%"
-
             />
         );
     }

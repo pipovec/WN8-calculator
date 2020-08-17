@@ -20,6 +20,13 @@ class History extends Component {
         this.setCharData = this.setCharData.bind(this);
     }
 
+    componentDidUpdate(prevProps: Readonly<P>) {
+        if(prevProps.tank_id !== this.props.tank_id)
+        {
+            this.getHistoryData(this.props.tank_id);
+        }
+    }
+
     async getHistoryData(tank_id) {
         await fetch(process.env.REACT_APP_API_URL + '/expected-value-history/' + tank_id)
             .then(response => {
