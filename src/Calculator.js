@@ -1,96 +1,150 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import NativeSelect from '@material-ui/core/NativeSelect'
+import FormControl from '@material-ui/core/FormControl'
+import InputLabel from '@material-ui/core/InputLabel'
 
 class Calculator extends Component {
+
+
   constructor(props) {
     super(props);
-    this.state = {type: 'mediumTank',level: '10',tank_id: '0',};
-    this.handleType = this.handleType.bind(this);
-    this.handleLevel = this.handleLevel.bind(this);
-    this.handleTank = this.handleTank.bind(this);
-    this.Data = this.Data.bind(this);
+    this.state = {type: '', level: '', tank_id: '', tanks: ''}
+    this.handleType = this.handleType.bind(this)
+    this.handleLevel = this.handleLevel.bind(this)
+    this.handleTank = this.handleTank.bind(this)
+    this.Data = this.Data.bind(this)
+    this.SendRequest = this.SendRequest.bind(this)
   }
+
 
   Data() {
     var data = this.props.etv.data;
+
     var dat = [];
     for(const prop in data)  {
-      if( parseInt(data[prop].IDNum,10) === parseInt(this.state.tank_id,10)) {
 
-        dat[0]  = parseFloat(data[prop].expDamage);
-        dat[1]  = parseFloat(data[prop].expDef);
-        dat[2]  = parseFloat(data[prop].expFrag);
-        dat[3]  = parseFloat(data[prop].expSpot);
-        dat[4]  = parseFloat(data[prop].expWinRate);
-
+      if( parseInt(data[prop].tank_id,10) === parseInt(this.state.tank_id,10)) {
+        dat[0]  = parseFloat(data[prop].dmg);
+        dat[1]  = parseFloat(data[prop].def);
+        dat[2]  = parseFloat(data[prop].frag);
+        dat[3]  = parseFloat(data[prop].spot);
+        dat[4]  = parseFloat(data[prop].win);
       }
 
     }
     return dat;
   }
 
+componentDidMount() {
+  this.SendRequest('10','mediumTank');
+  this.setState({type: 'mediumTank', level: '10', tank_id: '0'})
+}
+
+
+async SendRequest(level, type) {
+  var url = process.env.REACT_APP_API_URL + '/encyclopedia/level/'+level+'/type/'+type
+
+  await fetch(url)
+  .then( response => {
+    return response.json()
+  })
+  .then( json => {    
+    this.setState({tanks: json})
+  })
+
+}
 
 handleType(e) {
-  this.setState({select: e.target.value});
+  this.setState({select: e.target.value})
+  this.SendRequest(this.state.level,e.target.value)
 }
 
 handleLevel(e) {
-  this.setState({level: e.target.value});
+  this.setState({level: e.target.value});  
+  this.SendRequest(e.target.value,this.state.type)
 }
 
 handleTank(e) {
   var t = this.Data();
-  this.setState({tank_id: e.target.value});
-  this.props.onFindTankId(e.target.value);
-  this.props.onFindETV(t);
-
-
+  this.setState({tank_id: e.target.value})
+  this.props.onFindTankId(e.target.value)
+  
+  for(var value in this.state.tanks) {
+    if(this.state.tanks[value].tank_id === parseInt(e.target.value,10))
+    this.props.onFindTankPicture( this.state.tanks[value].big_icon )  
+  }
+  
+  this.props.onFindETV(t)
 }
 
   render() {
-  
-  var Tanks = [];
-  const levels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  const LevelsItem = levels.map((levels)=>
-    <option key={levels} value={levels}> {levels} </option>
-  );
-
-    let c = this.props.tanks.data;
-    let i = 0;
+    var Tanks = <option key='' value=''> Loading data ... </option>
     
-    for(const prop in c)     {
-        if(c[prop].type === this.state.select) {
-            if(parseInt(c[prop].tier,10) === parseInt(this.state.level,10))  {
-            Tanks[i]=<option key={c[prop].tank_id} value={c[prop].tank_id}> {c[prop].short_name} </option>;
-            i++;
-          }
-        }
-    }
-
+    if(this.state.tanks.length > 0)
+    {
+      Tanks = this.state.tanks.map( (tank) => 
+        <option key={tank.tank_id} value={tank.tank_id}>{tank.name}</option>        
+      )
+    }    
+    
     return (
-      <div className="well">
-            {/* Vyber konkretneho tanku */}
-            <form className="form-inline">
-              <select  value={this.state.tank_id} onChange={this.handleTank} className="form-control">
-                {Tanks}
-              </select>
+      <div className="w3-row-padding w3-padding">
+            {/* Vyber level tankov */}
+            <div className="w3-third">
+              <FormControl fullWidth={true} margin='dense' variant='outlined'>
+                <InputLabel shrink>
+                    Level
+                </InputLabel>
+                  <NativeSelect
+                    onChange={this.handleLevel}
+                    name='Level' 
+                    defaultValue={10}                   
+                    >
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                  </NativeSelect>
+                </FormControl>
+            </div>
 
             {/* Vyber typy tankov */}
-            <select  value={this.state.select} onChange={this.handleType} className="form-control">
-              <option value="mediumTank">mediumTank</option>
-              <option value="heavyTank">heavyTank</option>
-              <option value="lightTank">lightTank</option>
-              <option value="AT-SPG">TD</option>
-              <option value="SPG">SPG</option>
-            </select>
+            <div className="w3-third">
+              <FormControl fullWidth={true} margin='dense' variant='outlined'>
+                <InputLabel shrink>
+                  Type
+                </InputLabel>
+                <NativeSelect onChange={this.handleType} >
+                  <option value="mediumTank">mediumTank</option>
+                  <option value="heavyTank">heavyTank</option>
+                  <option value="lightTank">lightTank</option>
+                  <option value="AT-SPG">TD</option>
+                  <option value="SPG">SPG</option>
+                </NativeSelect>              
+              </FormControl>             
+            </div>
 
-            {/* Vyber level tankov */}
-            <select  value={this.state.level} onChange={this.handleLevel} className="form-control">
-              {LevelsItem}
-            </select>
-        </form>
-        {this.taaaa}
+            {/* Vyber konkretneho tanku */}
+            <div className="w3-third">
+              <FormControl fullWidth={true} margin='dense' variant='outlined'>
+                <InputLabel shrink>
+                  Tank
+                </InputLabel>              
+              <NativeSelect
+               onChange={this.handleTank} 
+              >
+                <option defaultValue="0">Choose your tank</option>
+                {Tanks}
+              </NativeSelect>
+              </FormControl>
+            </div>
       </div>
-
 
     );
   }
