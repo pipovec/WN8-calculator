@@ -17,6 +17,9 @@ class LineChart extends Component {
                 title: {
                   text: this.props.name,
                 },
+                markers: {
+                    size: 1,
+                }
             },
             series: [
                 {

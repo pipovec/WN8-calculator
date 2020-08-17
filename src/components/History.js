@@ -6,12 +6,11 @@ class History extends Component {
         super(props);
         this.state = {
             historyData: undefined,
-            frags: [5,4,3,2,1],
-            dmg: [1882.726,1882.858],
-            spot: [5,4,3,2,1],
-            def: [5,4,3,2,1],
-            win: [5,4,3,2,1],
-            date: "",
+            frags: [{}],
+            dmg: [{}],
+            spot: [],
+            def: [],
+            win: [],
             tank_id: this.props.tank_id,
         };
 
@@ -39,12 +38,28 @@ class History extends Component {
     }
 
     setCharData() {
-        let dataFrags = this.state.historyData.map(element => element.frag);
-        let dataDmg = this.state.historyData.map(element => element.dmg);
-        let dataSpot = this.state.historyData.map(element => element.spot);
-        let dataDef = this.state.historyData.map(element => element.def);
-        let dataWin = this.state.historyData.map(element => element.win);
-        let dataDate = this.state.historyData.map(element => element.date);
+        let dataFrags = this.state.historyData.map(element => ({
+            y: element.frag,
+            x: element.date
+        }));
+        let dataDmg = this.state.historyData.map(element => ({
+            y: element.dmg,
+            x: element.date
+        }));
+        let dataSpot = this.state.historyData.map(element =>({
+            y: element.spot,
+            x: element.date
+        }));
+        let dataDef = this.state.historyData.map(element => ({
+            y: element.def,
+            x: element.date
+        }));
+        let dataWin = this.state.historyData.map(element => ({
+            y: element.win,
+            x: element.date
+        }));
+
+
 
         this.setState({
             frags: dataFrags,
@@ -52,7 +67,6 @@ class History extends Component {
             spot: dataSpot,
             def: dataDef,
             win: dataWin,
-            date: dataDate,
         });
     }
 
@@ -61,19 +75,19 @@ class History extends Component {
             <div>
                 <div className="w3-row">
                     <div className="w3-col l6 m12">
-                        <LineChart data={this.state.frags} name='Frags history' date={this.state.date}/>
+                        <LineChart data={this.state.frags} name='Frags history' />
                     </div>
                     <div className="w3-col l6 m12">
-                        <LineChart data={this.state.dmg} name='Damage history' date={this.state.date}/>
+                        <LineChart data={this.state.dmg} name='Damage history' />
                     </div>
                     <div className="w3-col l6 m12">
-                        <LineChart data={this.state.spot} name='Spot history' date={this.state.date}/>
+                        <LineChart data={this.state.spot} name='Spot history' />
                     </div>
                     <div className="w3-col l6 m12">
-                        <LineChart data={this.state.def} name='Def history' date={this.state.date}/>
+                        <LineChart data={this.state.def} name='Def history' />
                     </div>
                     <div className="w3-col l6 m12">
-                        <LineChart data={this.state.win} name='Win history' date={this.state.date}/>
+                        <LineChart data={this.state.win} name='Win history' />
                     </div>
                 </div>
             </div>
