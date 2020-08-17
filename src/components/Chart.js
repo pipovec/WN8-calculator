@@ -8,7 +8,18 @@ class LineChart extends Component {
             options: {
                 chart: {
                     id: this.props.name,
-                    type: "line"
+                    type: "line",
+                    zoom: {
+                        type: 'x',
+                        enabled: true,
+                        autoScaleYaxis: true,
+                    },
+                },
+                toolbar: {
+                    autoSelected: 'zoom'
+                },
+                dataLabels: {
+                    enabled: false
                 },
                 stroke: {
                     widths: 1,
@@ -19,7 +30,11 @@ class LineChart extends Component {
                 },
                 markers: {
                     size: 1,
+                },
+                xaxis: {
+                    type: 'datetime',
                 }
+
             },
             series: [
                 {
