@@ -371,7 +371,7 @@ class Result extends Component {
 
       <div className="w3-row w3-margin-top" style={WN8Style}>
         <div className="w3-center">
-          <h2><strong>{WN8}</strong></h2>
+          <h2 style={{color: "white"}}><strong>{WN8}</strong></h2>
         </div>
       </div>
 

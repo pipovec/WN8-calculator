@@ -27,12 +27,12 @@ class History extends Component {
     }
 
     async getHistoryData(tank_id) {
-        await fetch(process.env.REACT_APP_API_URL + '/expected-value-history/' + tank_id)
+        await fetch(process.env.REACT_APP_API_URL + '/expected-value-history-two-weeks/' + tank_id)
             .then(response => {
                 return response.json();
             })
             .then(json => {
-                this.setState({historyData: json});
+                this.setState({historyData: json.data});
                 this.setCharData();
             })
     }
@@ -40,23 +40,23 @@ class History extends Component {
     setCharData() {
         let dataFrags = this.state.historyData.map(element => ({
             y: element.frag,
-            x: element.date
+            x: element.date.date
         }));
         let dataDmg = this.state.historyData.map(element => ({
             y: element.dmg,
-            x: element.date
+            x: element.date.date
         }));
         let dataSpot = this.state.historyData.map(element =>({
             y: element.spot,
-            x: element.date
+            x: element.date.date
         }));
         let dataDef = this.state.historyData.map(element => ({
             y: element.def,
-            x: element.date
+            x: element.date.date
         }));
         let dataWin = this.state.historyData.map(element => ({
             y: element.win,
-            x: element.date
+            x: element.date.date
         }));
 
 
@@ -88,6 +88,11 @@ class History extends Component {
                     </div>
                     <div className="w3-col l6 m12">
                         <LineChart data={this.state.win} name='Win history' />
+                    </div>
+                    <div className="w3-col l6 m12 w3-center" >
+                        <div>
+                            <a href={"https://www.fpcstat.cz/expected-tank-value-history"}>More data range for ETV</a>
+                        </div>
                     </div>
                 </div>
             </div>
