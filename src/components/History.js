@@ -19,7 +19,7 @@ class History extends Component {
         this.setCharData = this.setCharData.bind(this);
     }
 
-    componentDidUpdate(prevProps: Readonly<P>) {
+    componentDidUpdate(prevProps) {
         if(prevProps.tank_id !== this.props.tank_id)
         {
             this.getHistoryData(this.props.tank_id);
