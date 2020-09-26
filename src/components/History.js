@@ -27,7 +27,7 @@ class History extends Component {
     }
 
     async getHistoryData(tank_id) {
-        await fetch(process.env.REACT_APP_API_URL + '/expected-value-history-two-weeks/' + tank_id)
+        await fetch('https://api.fpcstat.cz/expected-value-history-two-weeks/' + tank_id)
             .then(response => {
                 return response.json();
             })

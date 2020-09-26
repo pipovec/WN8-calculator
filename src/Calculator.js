@@ -42,7 +42,7 @@ componentDidMount() {
 
 
 async SendRequest(level, type) {
-  var url = process.env.REACT_APP_API_URL + '/encyclopedia/level/'+level+'/type/'+type
+  var url = 'https://api.fpcstat.cz/encyclopedia/level/'+level+'/type/'+type
 
   await fetch(url)
   .then( response => {
