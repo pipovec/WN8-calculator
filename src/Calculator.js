@@ -42,9 +42,16 @@ componentDidMount() {
 
 
 async SendRequest(level, type) {
-  var url = 'https://api.fpcstat.cz/encyclopedia/level/'+level+'/type/'+type
+  
+  const urlApi = 'https://api2.fpcstat.cz/api/encyclopedia_vehicles';
+  const params = {'level': level, 'type':type};
 
-  await fetch(url)
+  let url = new URL(urlApi);
+  url.search = new URLSearchParams(params).toString();
+
+  await fetch(url, {
+    headers: {Accept: 'application/json'},    
+  })
   .then( response => {
     return response.json()
   })

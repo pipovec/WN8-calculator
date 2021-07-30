@@ -89,10 +89,8 @@ class History extends Component {
                     <div className="w3-col l6 m12">
                         <LineChart data={this.state.win} name='Win history' />
                     </div>
-                    <div className="w3-col l6 m12 w3-center" >
-                        <div>
-                            <a href={"https://www.fpcstat.cz/expected-tank-value-history"}>More data range for ETV</a>
-                        </div>
+                    <div className="w3-col l6 m12 w3-center">                        
+                        <a href={"https://etvh.fpcstat.cz"}>More data range for ETV</a>
                     </div>
                 </div>
             </div>
