@@ -64,7 +64,7 @@ class App extends Component {
             />
           </div>
           
-          <div className="w3-rowpadding w3-card w3-margin-bottom">
+          <div className="w3-row-padding w3-card w3-margin-bottom">
               <div className="w3-container w3-padding">
                 <Picture
                     picture_url={this.state.tankPicture_url}
