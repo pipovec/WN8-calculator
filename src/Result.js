@@ -7,7 +7,6 @@ import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
-
 class Result extends Component {
   constructor(props) {
     super(props);
@@ -18,8 +17,9 @@ class Result extends Component {
     this.handleYDef = this.handleYDef.bind(this)
     this.handleYWin = this.handleYWin.bind(this)
     this.clickAvgValue = this.clickAvgValue.bind(this)
+    this.handleSwitchDevelop = this.handleSwitchDevelop.bind(this)
+    this.handleSwitchHistory = this.handleSwitchHistory.bind(this)
     
-
     this.state = {
       yDmg: 0.00,
       ySpot: 0.00,
@@ -27,41 +27,43 @@ class Result extends Component {
       yDef: 0.00,
       yWin: 0.00,
       developerMode: false,
-      showHistory: false
-    };
-
-  }
-
-  Data () {
-
-    var data = this.props.etv_tank.data;
-    var dat = [];
-    for(const prop in this.props.etv_tank.data)  {
-      if(parseInt(data[prop].tank_id,10 ) === parseInt(this.props.id,10))
-      {
-        dat[0] = data[prop].tank_id;
-        dat[1] = data[prop].dmg;
-        dat[2] = data[prop].def;
-        dat[3] = data[prop].frag;
-        dat[4] = data[prop].spot;
-        dat[5] = data[prop].win;
-      }
-
+      historyMode: false,      
+      tankEtvData: {},
+      htmlDevelopMode: '',
+      htmlHistoryMode: '',
+      wn8value: 0.00,
     }
 
-    return dat;
   }
 
-  clickAvgValue() {
+  componentDidUpdate(prevProps) {
+    if(prevProps.tank_id !== this.props.tank_id) {
+        this.Data();
+    }
+  }
+  
+  async Data () {
+    if(this.props.tank_id !== 0 ) {
+      const apiURL = process.env.REACT_APP_API_URL+'/api/expected_tank_values/'+this.props.tank_id;
 
-    let data = this.Data()
-    
+      await fetch(apiURL, {
+        headers: {'Accept': 'application/json'}
+      }).then(response => {
+        return response.json();
+      }).then( json => {
+        this.setState({tankEtvData:json})
+      });
+    }    
+  }
+
+  clickAvgValue() {   
+   
     this.setState({
-      yFrag: data[3],
-      yDmg: data[1],
-      ySpot: data[4],
-      yDef: data[2],
-      yWin: data[5],
+      yFrag: this.state.tankEtvData.frag,
+      yDmg: this.state.tankEtvData.dmg,
+      ySpot: this.state.tankEtvData.spot,
+      yDef: this.state.tankEtvData.def,
+      yWin: this.state.tankEtvData.win,
       
     })
     this.forceUpdate();
@@ -109,8 +111,6 @@ class Result extends Component {
     }
 
     rFRAGc = rFRAGc.toFixed(4);
-
-
 
     return rFRAGc;
   }
@@ -162,64 +162,72 @@ class Result extends Component {
     return rDEFc.toFixed(4);
   }
 
+  handleSwitchHistory() {
+    this.setState({historyMode: !this.state.historyMode});
+  }
 
+  handleSwitchDevelop() {
+    this.setState({developerMode: !this.state.developerMode})
+  }
 
-  render() {
-    
-    const handleSwitch = name => event => {
-      this.setState({  [name]: event.target.checked });
-    };
-
-    var s = this.Data();
-    if(s[3]== null){s[3]=0;s[1]=0;s[2]=0;s[4]=0;s[5]=0;}
-    var rDMGc  = this.returnrDMGc(s[1],this.state.yDmg);
-    var rFragc = this.returnrFRAGc(s[3],this.state.yFrag,rDMGc);
-    var rWinc  = this.returnrWINc(s[5],this.state.yWin);
-    var rSpotc = this.returnrSPOTc(s[4],this.state.ySpot,rDMGc);
-    var rDefc  = this.returnrDEFc(s[2],this.state.yDef,rDMGc);
-    var WN8 = (980*rDMGc) + (210*rDMGc*rFragc) + (155*rFragc*rSpotc) + (75*rDefc*rFragc) + (145*Math.min(1.8,rWinc));
-    WN8 = WN8.toFixed(2);
-
-    var Wcolor = 'red';
-
+  wn8color(WN8) {
+    var color = 'grey';
 
     if(WN8 <= 449) {
-      Wcolor = 'grey';
+      color = 'rgb(147, 13, 13)';
     } else if (WN8 >= 450 && WN8 < 649.99) {
-      Wcolor = '#e5000';
+      color = '#e50000';
     } else if (WN8 >= 650 && WN8 < 849.99) {
-      Wcolor = '#cd3333';
+      color = '#cd3333';
     } else if (WN8 >= 850 && WN8 < 1049.99) {
-      Wcolor = '#d77900';
+      color = '#d77900';
     } else if (WN8 >= 1050 && WN8 < 1249.99) {
-      Wcolor = '#d7B600';
+      color = '#d7B600';
     } else if (WN8 >= 1250 && WN8 < 1399.99) {
-      Wcolor = '#6d9251';
+      color = '#6d9251';
     }else if (WN8 >= 1400 && WN8 < 1599.99) {
-      Wcolor = '#4c762e';
+      color = '#4c762e';
     } else if (WN8 >= 1600 && WN8 < 1999.99) {
-      Wcolor = '#46a892';
+      color = '#46a892';
     } else if (WN8 >= 2000 && WN8 < 2449.99) {
-      Wcolor = '#4a92b7';
+      color = '#4a92b7';
     } else if (WN8 >= 2450 && WN8 < 2849.99) {
-      Wcolor = '#83579d';
+      color = '#83579d';
     } else if (WN8 >= 2850 ) {
-      Wcolor = '#5a3175';
-    }
+      color = '#5a3175';
+    }   
 
     var WN8Style = {
-      background: Wcolor,
+      background: color,
     }
 
-    const devMode = this.state.developerMode;
-    let dev;
+    return WN8Style;
+  }
+  
+  render() {
 
-    const history = this.state.showHistory;
-    let his;
-      
-      if( devMode && !history)
-      {
-        dev = <table className="w3-table w3-border w3-centered w3-bordered w3-margin-top">
+    var rDMGc  = this.returnrDMGc(this.state.tankEtvData.dmg,this.state.yDmg);
+    var rFragc = this.returnrFRAGc(this.state.tankEtvData.frag,this.state.yFrag,rDMGc);
+    var rWinc  = this.returnrWINc(this.state.tankEtvData.win,this.state.yWin);
+    var rSpotc = this.returnrSPOTc(this.state.tankEtvData.spot,this.state.ySpot,rDMGc);
+    var rDefc  = this.returnrDEFc(this.state.tankEtvData.def,this.state.yDef,rDMGc);
+    
+    var WN8 = (980*rDMGc) + (210*rDMGc*rFragc) + (155*rFragc*rSpotc) + (75*rDefc*rFragc) + (145*Math.min(1.8,rWinc));
+    WN8 = WN8.toFixed(2); 
+
+    let historyMode;
+
+    // HISTORY MOD
+    if(this.state.historyMode && this.props.tank_id > 0) {      
+      historyMode = <History tankId={this.props.tank_id}></History>
+    } else {
+      historyMode = '';
+    }
+
+    // HISTORY MOD
+    let developerMode;  
+    if(this.state.developerMode && this.props.tank_id > 0) {
+        developerMode = <table className="w3-table w3-border w3-centered w3-bordered w3-margin-top">
                     <thead className="w3-tiny">
                       <tr><th className="text-center">expFrag</th>
                           <th className="text-center">expDMG</th>
@@ -229,11 +237,11 @@ class Result extends Component {
                     </thead>
                     <tbody>
                       <tr>
-                        <td>{s[3]}</td>
-                        <td>{s[1]}</td>
-                        <td>{s[4]}</td>
-                        <td>{s[2]}</td>
-                        <td>{s[5]}</td>
+                        <td>{this.state.tankEtvData.frag}</td>
+                        <td>{this.state.tankEtvData.dmg}</td>
+                        <td>{this.state.tankEtvData.spot}</td>
+                        <td>{this.state.tankEtvData.def}</td>
+                        <td>{this.state.tankEtvData.win}</td>
                       </tr>
                     </tbody>
                     <thead className="w3-tiny">
@@ -245,11 +253,11 @@ class Result extends Component {
                   </thead>
                   <tbody>
                     <tr>
-                      <td>{this.returnStep1(s[3],this.state.yFrag)}</td>
-                      <td>{this.returnStep1(s[1],this.state.yDmg)}</td>
-                      <td>{this.returnStep1(s[4],this.state.ySpot)}</td>
-                      <td>{this.returnStep1(s[2],this.state.yDef)}</td>
-                      <td>{this.returnStep1(s[5],this.state.yWin)}</td>
+                      <td>{this.returnStep1(this.state.tankEtvData.frag,this.state.yFrag)}</td>
+                      <td>{this.returnStep1(this.state.tankEtvData.dmg,this.state.yDmg)}</td>
+                      <td>{this.returnStep1(this.state.tankEtvData.spot,this.state.ySpot)}</td>
+                      <td>{this.returnStep1(this.state.tankEtvData.def,this.state.yDef)}</td>
+                      <td>{this.returnStep1(this.state.tankEtvData.win,this.state.yWin)}</td>
                     </tr>
                   </tbody>
                   <thead className="w3-tiny">
@@ -269,22 +277,13 @@ class Result extends Component {
                     </tr>
                   </tbody>
                 </table>
-    }
-    else{
-      dev = '';
-    }
+    } else {
+      developerMode = '';
+  }
 
-     if(history && !devMode && this.props.id > 1)
-     {
-       his = <History tank_id={this.props.id}></History>
-     }
-     else
-     {
-       his = '';
-     }
-    return (
       
-
+    
+    return (
       <div>        
         <div className="w3-cell-row">          
           <div className="w3-padding w3-cell w3-mobile">            
@@ -342,9 +341,8 @@ class Result extends Component {
             control={
               <Switch
                   checked={this.state.developerMode}
-                  disabled={this.state.showHistory}
-                  onChange={handleSwitch('developerMode')}
-                  wcolor="default"
+                  disabled={!this.state.historyMode && this.props.tank_id !== 0 ? false:true}
+                  onChange={this.handleSwitchDevelop}
               />
             }
           label="Developer mode"
@@ -352,11 +350,9 @@ class Result extends Component {
           <FormControlLabel
               control={
                 <Switch
-                    disabled={this.state.developerMode}
-                    checked={this.state.showHistory}
-                    onChange={handleSwitch('showHistory')}
-
-
+                    checked={this.state.historyMode}
+                    disabled={!this.state.developerMode && this.props.tank_id !== 0 ? false:true}                    
+                    onChange={this.handleSwitchHistory}
                 />
               }
               label="History"
@@ -366,18 +362,16 @@ class Result extends Component {
         </div>
        
         <Divider variant="fullWidth" component="hr"/>
-        {dev}
-        {his}
+        {developerMode}
+        {historyMode}
 
-      <div className="w3-row w3-margin-top" style={WN8Style}>
+      <div className="w3-row w3-margin-top" style={this.wn8color(WN8)}>
         <div className="w3-center">
           <h2 style={{color: "white"}}><strong>{WN8}</strong></h2>
         </div>
       </div>
 
-      </div>
-
-
+    </div>
     );
   }
 

@@ -6,23 +6,10 @@ import Result from './Result'
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = {tanks: '', etvdata: false, tank_id: '',etv_tank: '', tankPicture_url: '', pictureHeight : { minHeight: "116x"}}
-    this.GetETVtable = this.GetETVtable.bind(this)
-    this.GetETVtable()
-    
+    this.state = {tanks: '', etvdata: false, tank_id: 0.00,etv_tank: '', tankPicture_url: '', pictureHeight : { minHeight: "116x"}}
     this.handleTankId = this.handleTankId.bind(this)
     this.handleETVTank = this.handleETVTank.bind(this)
     this.handleTankPicture = this.handleTankPicture.bind(this)
-  }
-
-
-  async GetETVtable () {
-    await fetch('https://api.fpcstat.cz/expected-value')
-        .then(response => {
-          return response.json();
-        }).then( json => {
-          this.setState({etvdata: json['0']})
-        });
   }
 
   handleTankId(id)  {
@@ -38,26 +25,17 @@ class App extends Component {
   }
 
   render() { 
-    let url
-    let version   
-
-    if (this.state.etvdata)
-    {     
-     version = this.state.etvdata.header.version
-     url = this.state.etvdata.header.url
-    }
-
+    
     return (
       <div className="w3-container w3-center">
           <h1>WN8 online calculator</h1>
           <p>I am using Expected Tank Values from server 
-            <a href={url}> modxvm.com</a> version {version}
+            <a href="https://modxvm.com/en/wn8-expected-values/"> modxvm.com</a>
           </p>                
         <div className="w3-row-padding">
           <div className="col-sm-6 w3-card w3-margin-bottom ">
             <Calculator
-                tanks={this.state.tanks}
-                etv={this.state.etvdata}
+                tanks={this.state.tanks}                
                 onFindTankId={this.handleTankId}
                 onFindETV={this.handleETVTank}
                 onFindTankPicture={ this.handleTankPicture }
@@ -72,9 +50,8 @@ class App extends Component {
             </div>
           
           <div className="w3-row-padding w3-card w3-padding">
-                <Result
-                    etv_tank={this.state.etvdata}
-                    id={this.state.tank_id}
+                <Result                    
+                    tank_id={this.state.tank_id}
                 />
           </div>
         </div>
