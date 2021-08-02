@@ -5,34 +5,14 @@ import InputLabel from '@material-ui/core/InputLabel'
 
 class Calculator extends Component {
 
-
   constructor(props) {
     super(props);
     this.state = {type: '', level: '', tank_id: '', tanks: ''}
     this.handleType = this.handleType.bind(this)
     this.handleLevel = this.handleLevel.bind(this)
     this.handleTank = this.handleTank.bind(this)
-    this.Data = this.Data.bind(this)
+    // this.Data = this.Data.bind(this)
     this.SendRequest = this.SendRequest.bind(this)
-  }
-
-
-  Data() {
-    var data = this.props.etv.data;
-
-    var dat = [];
-    for(const prop in data)  {
-
-      if( parseInt(data[prop].tank_id,10) === parseInt(this.state.tank_id,10)) {
-        dat[0]  = parseFloat(data[prop].dmg);
-        dat[1]  = parseFloat(data[prop].def);
-        dat[2]  = parseFloat(data[prop].frag);
-        dat[3]  = parseFloat(data[prop].spot);
-        dat[4]  = parseFloat(data[prop].win);
-      }
-
-    }
-    return dat;
   }
 
 componentDidMount() {
@@ -40,10 +20,9 @@ componentDidMount() {
   this.setState({type: 'mediumTank', level: '10', tank_id: '0'})
 }
 
-
 async SendRequest(level, type) {
   
-  const urlApi = 'https://api2.fpcstat.cz/api/encyclopedia_vehicles';
+  const urlApi = process.env.REACT_APP_API_URL+'/api/encyclopedia_vehicles'; 
   const params = {'level': level, 'type':type};
 
   let url = new URL(urlApi);
@@ -71,8 +50,7 @@ handleLevel(e) {
   this.SendRequest(e.target.value,this.state.type)
 }
 
-handleTank(e) {
-  var t = this.Data();
+handleTank(e) {  
   this.setState({tank_id: e.target.value})
   this.props.onFindTankId(e.target.value)
   
@@ -80,8 +58,6 @@ handleTank(e) {
     if(this.state.tanks[value].tank_id === parseInt(e.target.value,10))
     this.props.onFindTankPicture( this.state.tanks[value].big_icon )  
   }
-  
-  this.props.onFindETV(t)
 }
 
   render() {

@@ -10,24 +10,22 @@ class History extends Component {
             dmg: [{}],
             spot: [],
             def: [],
-            win: [],
-            tank_id: this.props.tank_id,
+            win: [],            
         };
 
         this.getHistoryData = this.getHistoryData.bind(this);
-        this.getHistoryData(this.props.tank_id);
+        this.getHistoryData(this.props.tankId);
         this.setCharData = this.setCharData.bind(this);
     }
 
     componentDidUpdate(prevProps) {
-        if(prevProps.tank_id !== this.props.tank_id)
-        {
-            this.getHistoryData(this.props.tank_id);
+        if(prevProps.tankId !== this.props.tankId) {
+            this.getHistoryData();
         }
     }
 
-    async getHistoryData(tank_id) {
-        await fetch('https://api.fpcstat.cz/expected-value-history-two-weeks/' + tank_id)
+    async getHistoryData() {
+        await fetch('https://api.fpcstat.cz/expected-value-history-two-weeks/' + this.props.tankId)
             .then(response => {
                 return response.json();
             })
