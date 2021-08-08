@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import LineChart from "./Chart";
+import moment from 'moment';
 
 class History extends Component {
     constructor(props) {
@@ -14,7 +15,7 @@ class History extends Component {
         };
 
         this.getHistoryData = this.getHistoryData.bind(this);
-        this.getHistoryData(this.props.tankId);
+        this.getHistoryData();
         this.setCharData = this.setCharData.bind(this);
     }
 
@@ -25,12 +26,25 @@ class History extends Component {
     }
 
     async getHistoryData() {
-        await fetch('https://api.fpcstat.cz/expected-value-history-two-weeks/' + this.props.tankId)
+        var date = moment().day(-14).format('YYYY-MM-DD');
+        
+        var urlApi = new URL(process.env.REACT_APP_API_URL+'/api/expected_tank_value_histories'); 
+        var params = {
+            'vehicle.tank_id': this.props.tankId,
+            'date[after]': date,
+            'order[date]': 'DESC',
+        };
+                
+        urlApi.search = new URLSearchParams(params).toString();
+        
+        await fetch(urlApi, {
+            headers: {Accept: 'application/json'},
+        })
             .then(response => {
                 return response.json();
             })
             .then(json => {
-                this.setState({historyData: json.data});
+                this.setState({historyData: json});
                 this.setCharData();
             })
     }
@@ -38,23 +52,23 @@ class History extends Component {
     setCharData() {
         let dataFrags = this.state.historyData.map(element => ({
             y: element.frag,
-            x: element.date.date
+            x: element.date
         }));
         let dataDmg = this.state.historyData.map(element => ({
             y: element.dmg,
-            x: element.date.date
+            x: element.date
         }));
         let dataSpot = this.state.historyData.map(element =>({
             y: element.spot,
-            x: element.date.date
+            x: element.date
         }));
         let dataDef = this.state.historyData.map(element => ({
             y: element.def,
-            x: element.date.date
+            x: element.date
         }));
         let dataWin = this.state.historyData.map(element => ({
             y: element.win,
-            x: element.date.date
+            x: element.date
         }));
 
 
