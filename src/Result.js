@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import History from './components/History';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -6,6 +6,7 @@ import Switch from '@material-ui/core/Switch';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import {wn8color} from 'wn8-color';
 
 class Result extends Component {
   constructor(props) {
@@ -19,7 +20,7 @@ class Result extends Component {
     this.clickAvgValue = this.clickAvgValue.bind(this)
     this.handleSwitchDevelop = this.handleSwitchDevelop.bind(this)
     this.handleSwitchHistory = this.handleSwitchHistory.bind(this)
-    
+
     this.state = {
       yDmg: 0.00,
       ySpot: 0.00,
@@ -27,86 +28,84 @@ class Result extends Component {
       yDef: 0.00,
       yWin: 0.00,
       developerMode: false,
-      historyMode: false,      
+      historyMode: false,
       tankEtvData: {},
       htmlDevelopMode: '',
       htmlHistoryMode: '',
       wn8value: 0.00,
     }
-
   }
 
   componentDidUpdate(prevProps) {
-    if(prevProps.tank_id !== this.props.tank_id) {
-        this.Data();
+    if (prevProps.tank_id !== this.props.tank_id) {
+      this.Data();
     }
   }
-  
-  async Data () {
-    if(this.props.tank_id !== 0 ) {
-      const apiURL = process.env.REACT_APP_API_URL+'/api/expected_tank_values/'+this.props.tank_id;
+
+  async Data() {
+    if (this.props.tank_id !== 0) {
+      const apiURL = process.env.REACT_APP_API_URL + '/api/expected_tank_values/' + this.props.tank_id;
 
       await fetch(apiURL, {
         headers: {'Accept': 'application/json'}
       }).then(response => {
         return response.json();
-      }).then( json => {
-        this.setState({tankEtvData:json})
+      }).then(json => {
+        this.setState({tankEtvData: json})
       });
-    }    
+    }
   }
 
-  clickAvgValue() {   
-   
+  clickAvgValue() {
     this.setState({
       yFrag: this.state.tankEtvData.frag,
       yDmg: this.state.tankEtvData.dmg,
       ySpot: this.state.tankEtvData.spot,
       yDef: this.state.tankEtvData.def,
       yWin: this.state.tankEtvData.win,
-      
+
     })
     this.forceUpdate();
   }
-  
-  handleYFrag (e) {
+
+  handleYFrag(e) {
     this.setState({yFrag: e.target.value, clickKill: e.target.value})
   }
 
-  handleYDmg (e) {
+  handleYDmg(e) {
     this.setState({yDmg: e.target.value, clickDmg: e.target.value})
   }
 
-  handleYSpot (e) {
+  handleYSpot(e) {
     this.setState({ySpot: e.target.value, clickSpot: e.target.value})
   }
 
-  handleYDef (e) {
+  handleYDef(e) {
     this.setState({yDef: e.target.value, clickDef: e.target.value})
   }
 
-  handleYWin (e) {
+  handleYWin(e) {
     this.setState({yWin: e.target.value, clickWin: e.target.value})
   }
 
   returnStep1(expValue, yValue) {
-    var result = yValue/expValue;
+    var result = yValue / expValue;
     result = result.toFixed(4);
 
-    if(isNaN(result))  {
+    if (isNaN(result)) {
       result = 0.0
     }
 
     return result;
   }
 
-  returnrFRAGc(expValue,yValue,rDMGc) {
-    var rFRAG = yValue/expValue;
+  returnrFRAGc(expValue, yValue, rDMGc) {
+    var rFRAG = yValue / expValue;
     rDMGc = parseFloat(rDMGc);
 
-    var rFRAGc = Math.max(0,Math.min(rDMGc + 0.2,(rFRAG   - 0.12)/(1 - 0.12)));
+    var rFRAGc = Math.max(0, Math.min(rDMGc + 0.2, (rFRAG - 0.12) / (1 - 0.12)));
 
-    if(isNaN(rFRAGc))  {
+    if (isNaN(rFRAGc)) {
       rFRAGc = 0.0
     }
 
@@ -116,46 +115,45 @@ class Result extends Component {
   }
 
   returnrDMGc(expValue, yValue) {
-    var rDMG =  yValue/expValue;
-    var rDAMAGEc = Math.max(0,(rDMG - 0.22) / (1 - 0.22) );
+    var rDMG = yValue / expValue;
+    var rDAMAGEc = Math.max(0, (rDMG - 0.22) / (1 - 0.22));
 
-    if(isNaN(rDAMAGEc))  {
+    if (isNaN(rDAMAGEc)) {
       rDAMAGEc = 0.0
     }
-
     return rDAMAGEc.toFixed(4);
   }
 
   returnrWINc(expValue, yValue) {
-    var rWIN     = yValue/expValue;
-    rWIN         = parseFloat(rWIN);
-    var rWINc    = Math.max(0,(rWIN    - 0.71) / (1 - 0.71) );
+    var rWIN = yValue / expValue;
+    rWIN = parseFloat(rWIN);
+    var rWINc = Math.max(0, (rWIN - 0.71) / (1 - 0.71));
 
-    if(isNaN(rWINc))  {
+    if (isNaN(rWINc)) {
       rWINc = 0.0
     }
 
     return rWINc.toFixed(4);
   }
 
-  returnrSPOTc(expValue,yValue,rDMGc) {
-    rDMGc        = parseFloat(rDMGc);
-    var rSPOT    = yValue/expValue;
-    var rSPOTc   = Math.max(0, Math.min(rDMGc + 0.1, (rSPOT   - 0.38) / (1 - 0.38)));
+  returnrSPOTc(expValue, yValue, rDMGc) {
+    rDMGc = parseFloat(rDMGc);
+    var rSPOT = yValue / expValue;
+    var rSPOTc = Math.max(0, Math.min(rDMGc + 0.1, (rSPOT - 0.38) / (1 - 0.38)));
 
-    if(isNaN(rSPOTc))  {
+    if (isNaN(rSPOTc)) {
       rSPOTc = 0.0
     }
 
     return rSPOTc.toFixed(4);
   }
 
-  returnrDEFc(expValue,yValue,rDMGc) {
-    rDMGc        = parseFloat(rDMGc);
-    var rDEF     = yValue/expValue;
-    var rDEFc    = Math.max(0, Math.min(rDMGc + 0.1, (rDEF    - 0.10) / (1 - 0.10)));
+  returnrDEFc(expValue, yValue, rDMGc) {
+    rDMGc = parseFloat(rDMGc);
+    var rDEF = yValue / expValue;
+    var rDEFc = Math.max(0, Math.min(rDMGc + 0.1, (rDEF - 0.10) / (1 - 0.10)));
 
-    if(isNaN(rDEFc))  {
+    if (isNaN(rDEFc)) {
       rDEFc = 0.0
     }
 
@@ -170,32 +168,10 @@ class Result extends Component {
     this.setState({developerMode: !this.state.developerMode})
   }
 
-  wn8color(WN8) {
+  wn8style(WN8) {
     var color = 'grey';
 
-    if(WN8 <= 449) {
-      color = 'rgb(147, 13, 13)';
-    } else if (WN8 >= 450 && WN8 < 649.99) {
-      color = '#e50000';
-    } else if (WN8 >= 650 && WN8 < 849.99) {
-      color = '#cd3333';
-    } else if (WN8 >= 850 && WN8 < 1049.99) {
-      color = '#d77900';
-    } else if (WN8 >= 1050 && WN8 < 1249.99) {
-      color = '#d7B600';
-    } else if (WN8 >= 1250 && WN8 < 1399.99) {
-      color = '#6d9251';
-    }else if (WN8 >= 1400 && WN8 < 1599.99) {
-      color = '#4c762e';
-    } else if (WN8 >= 1600 && WN8 < 1999.99) {
-      color = '#46a892';
-    } else if (WN8 >= 2000 && WN8 < 2449.99) {
-      color = '#4a92b7';
-    } else if (WN8 >= 2450 && WN8 < 2849.99) {
-      color = '#83579d';
-    } else if (WN8 >= 2850 ) {
-      color = '#5a3175';
-    }   
+    color = wn8color(WN8);
 
     var WN8Style = {
       background: color,
@@ -203,178 +179,169 @@ class Result extends Component {
 
     return WN8Style;
   }
-  
-  render() {
 
-    var rDMGc  = this.returnrDMGc(this.state.tankEtvData.dmg,this.state.yDmg);
-    var rFragc = this.returnrFRAGc(this.state.tankEtvData.frag,this.state.yFrag,rDMGc);
-    var rWinc  = this.returnrWINc(this.state.tankEtvData.win,this.state.yWin);
-    var rSpotc = this.returnrSPOTc(this.state.tankEtvData.spot,this.state.ySpot,rDMGc);
-    var rDefc  = this.returnrDEFc(this.state.tankEtvData.def,this.state.yDef,rDMGc);
-    
-    var WN8 = (980*rDMGc) + (210*rDMGc*rFragc) + (155*rFragc*rSpotc) + (75*rDefc*rFragc) + (145*Math.min(1.8,rWinc));
-    WN8 = WN8.toFixed(2); 
+  render() {
+    var rDMGc = this.returnrDMGc(this.state.tankEtvData.dmg, this.state.yDmg);
+    var rFragc = this.returnrFRAGc(this.state.tankEtvData.frag, this.state.yFrag, rDMGc);
+    var rWinc = this.returnrWINc(this.state.tankEtvData.win, this.state.yWin);
+    var rSpotc = this.returnrSPOTc(this.state.tankEtvData.spot, this.state.ySpot, rDMGc);
+    var rDefc = this.returnrDEFc(this.state.tankEtvData.def, this.state.yDef, rDMGc);
+
+    var WN8 = (980 * rDMGc) + (210 * rDMGc * rFragc) + (155 * rFragc * rSpotc) + (75 * rDefc * rFragc) + (145 * Math.min(1.8, rWinc));
+    WN8 = WN8.toFixed(2);
 
     let historyMode;
 
     // HISTORY MOD
-    if(this.state.historyMode && this.props.tank_id > 0) {      
+    if (this.state.historyMode && this.props.tank_id > 0) {
       historyMode = <History tankId={this.props.tank_id}></History>
     } else {
       historyMode = '';
     }
 
     // HISTORY MOD
-    let developerMode;  
-    if(this.state.developerMode && this.props.tank_id > 0) {
-        developerMode = <table className="w3-table w3-border w3-centered w3-bordered w3-margin-top">
-                    <thead className="w3-tiny">
-                      <tr><th className="text-center">expFrag</th>
-                          <th className="text-center">expDMG</th>
-                          <th className="text-center">expSpot</th>
-                          <th className="text-center">expDef</th>
-                          <th className="text-center">expWin</th></tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>{this.state.tankEtvData.frag}</td>
-                        <td>{this.state.tankEtvData.dmg}</td>
-                        <td>{this.state.tankEtvData.spot}</td>
-                        <td>{this.state.tankEtvData.def}</td>
-                        <td>{this.state.tankEtvData.win}</td>
-                      </tr>
-                    </tbody>
-                    <thead className="w3-tiny">
-                    <tr><th className="text-center">rFrag</th>
-                        <th className="text-center">rDMG</th>
-                        <th className="text-center">rSpot</th>
-                        <th className="text-center">rDef</th>
-                        <th className="text-center">rWin</th></tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>{this.returnStep1(this.state.tankEtvData.frag,this.state.yFrag)}</td>
-                      <td>{this.returnStep1(this.state.tankEtvData.dmg,this.state.yDmg)}</td>
-                      <td>{this.returnStep1(this.state.tankEtvData.spot,this.state.ySpot)}</td>
-                      <td>{this.returnStep1(this.state.tankEtvData.def,this.state.yDef)}</td>
-                      <td>{this.returnStep1(this.state.tankEtvData.win,this.state.yWin)}</td>
-                    </tr>
-                  </tbody>
-                  <thead className="w3-tiny">
-                    <tr><th className="text-center">rFragc</th>
-                        <th className="text-center">rDamagec</th>
-                        <th className="text-center">rSpotc</th>
-                        <th className="text-center">rDefc</th>
-                        <th className="text-center">rWinc</th></tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>{rFragc}</td>
-                      <td>{rDMGc}</td>
-                      <td>{rSpotc}</td>
-                      <td>{rDefc}</td>
-                      <td>{rWinc}</td>
-                    </tr>
-                  </tbody>
-                </table>
+    let developerMode;
+    if (this.state.developerMode && this.props.tank_id > 0) {
+      developerMode = <table className="w3-table w3-border w3-centered w3-bordered w3-margin-top">
+        <thead className="w3-tiny">
+        <tr>
+          <th className="text-center">expFrag</th>
+          <th className="text-center">expDMG</th>
+          <th className="text-center">expSpot</th>
+          <th className="text-center">expDef</th>
+          <th className="text-center">expWin</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>{this.state.tankEtvData.frag}</td>
+          <td>{this.state.tankEtvData.dmg}</td>
+          <td>{this.state.tankEtvData.spot}</td>
+          <td>{this.state.tankEtvData.def}</td>
+          <td>{this.state.tankEtvData.win}</td>
+        </tr>
+        </tbody>
+        <thead className="w3-tiny">
+        <tr>
+          <th className="text-center">rFrag</th>
+          <th className="text-center">rDMG</th>
+          <th className="text-center">rSpot</th>
+          <th className="text-center">rDef</th>
+          <th className="text-center">rWin</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>{this.returnStep1(this.state.tankEtvData.frag, this.state.yFrag)}</td>
+          <td>{this.returnStep1(this.state.tankEtvData.dmg, this.state.yDmg)}</td>
+          <td>{this.returnStep1(this.state.tankEtvData.spot, this.state.ySpot)}</td>
+          <td>{this.returnStep1(this.state.tankEtvData.def, this.state.yDef)}</td>
+          <td>{this.returnStep1(this.state.tankEtvData.win, this.state.yWin)}</td>
+        </tr>
+        </tbody>
+        <thead className="w3-tiny">
+        <tr>
+          <th className="text-center">rFragc</th>
+          <th className="text-center">rDamagec</th>
+          <th className="text-center">rSpotc</th>
+          <th className="text-center">rDefc</th>
+          <th className="text-center">rWinc</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>{rFragc}</td>
+          <td>{rDMGc}</td>
+          <td>{rSpotc}</td>
+          <td>{rDefc}</td>
+          <td>{rWinc}</td>
+        </tr>
+        </tbody>
+      </table>
     } else {
       developerMode = '';
-  }
-
-      
-    
+    }
     return (
-      <div>        
-        <div className="w3-cell-row">          
-          <div className="w3-padding w3-cell w3-mobile">            
-              <TextField
+      <div>
+        <div className="w3-cell-row">
+          <div className="w3-padding w3-cell w3-mobile">
+            <TextField
               onChange={this.handleYFrag} value={this.state.yFrag}
-              id="outlined-simple-start-adornment"        
+              id="outlined-simple-start-adornment"
               variant="outlined"
               label="Frags /Kills/ "
-              
-              />
-          </div>
 
-          <div className="w3-padding w3-cell w3-mobile">
-            <TextField
-            onChange={this.handleYDmg} value={this.state.yDmg}
-            id="outlined-simple-start-adornment"        
-            variant="outlined"
-            label="Damage dealt"            
             />
           </div>
-
           <div className="w3-padding w3-cell w3-mobile">
             <TextField
-            onChange={this.handleYSpot} value={this.state.ySpot}
-            id="outlined-simple-start-adornment"        
-            variant="outlined"
-            label="Enemies spotted"            
-            />        
-          </div>
-
-          <div className="w3-padding w3-cell w3-mobile">
-            <TextField
-            onChange={this.handleYDef} value={this.state.yDef}
-            id="outlined-simple-start-adornment"        
-            variant="outlined"
-            label="Dropped capture points"            
+              onChange={this.handleYDmg} value={this.state.yDmg}
+              id="outlined-simple-start-adornment"
+              variant="outlined"
+              label="Damage dealt"
             />
           </div>
-
           <div className="w3-padding w3-cell w3-mobile">
             <TextField
-            onChange={this.handleYWin} value={this.state.yWin}
-            id="outlined-simple-start-adornment"        
-            variant="outlined"
-            label="Winrate"            
-            />            
+              onChange={this.handleYSpot} value={this.state.ySpot}
+              id="outlined-simple-start-adornment"
+              variant="outlined"
+              label="Enemies spotted"
+            />
+          </div>
+          <div className="w3-padding w3-cell w3-mobile">
+            <TextField
+              onChange={this.handleYDef} value={this.state.yDef}
+              id="outlined-simple-start-adornment"
+              variant="outlined"
+              label="Dropped capture points"
+            />
+          </div>
+          <div className="w3-padding w3-cell w3-mobile">
+            <TextField
+              onChange={this.handleYWin} value={this.state.yWin}
+              id="outlined-simple-start-adornment"
+              variant="outlined"
+              label="Winrate"
+            />
           </div>
         </div>
-        
-        
-        <Divider variant="fullWidth" component="hr" />
+        <Divider variant="fullWidth" component="hr"/>
         <div className="w3-padding">
-        <FormGroup row>
-          <FormControlLabel
-            control={
-              <Switch
-                  checked={this.state.developerMode}
-                  disabled={!this.state.historyMode && this.props.tank_id !== 0 ? false:true}
-                  onChange={this.handleSwitchDevelop}
-              />
-            }
-          label="Developer mode"
-          />
-          <FormControlLabel
+          <FormGroup row>
+            <FormControlLabel
               control={
                 <Switch
-                    checked={this.state.historyMode}
-                    disabled={!this.state.developerMode && this.props.tank_id !== 0 ? false:true}                    
-                    onChange={this.handleSwitchHistory}
+                  checked={this.state.developerMode}
+                  disabled={!this.state.historyMode && this.props.tank_id !== 0 ? false : true}
+                  onChange={this.handleSwitchDevelop}
+                />
+              }
+              label="Developer mode"
+            />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={this.state.historyMode}
+                  disabled={!this.state.developerMode && this.props.tank_id !== 0 ? false : true}
+                  onChange={this.handleSwitchHistory}
                 />
               }
               label="History"
-          />
-          <Button variant="contained" onClick={this.clickAvgValue}>Load average value</Button>       
-        </FormGroup>
+            />
+            <Button variant="contained" onClick={this.clickAvgValue}>Load average value</Button>
+          </FormGroup>
         </div>
-       
         <Divider variant="fullWidth" component="hr"/>
         {developerMode}
         {historyMode}
-
-      <div className="w3-row w3-margin-top" style={this.wn8color(WN8)}>
-        <div className="w3-center">
-          <h2 style={{color: "white"}}><strong>{WN8}</strong></h2>
+        <div className="w3-row w3-margin-top" style={this.wn8style(WN8)}>
+          <div className="w3-center">
+            <h2 style={{color: "white"}}><strong>{WN8}</strong></h2>
+          </div>
         </div>
       </div>
-
-    </div>
     );
   }
-
 }
-
 export default Result;
