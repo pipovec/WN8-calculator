@@ -1,6 +1,6 @@
 ## WN8 CALCULATOR 
-Kalkucka na vypocet WN8 jedneho tanku pri hodnotach ktore si zadate. ETV tabulku si stahuje zo servera XVM ktory sa stara o vzdy aktulane hodnoty.
+Calculator for calculating the WN8 of one tank with the values you enter. ETV downloads the table from the XVM server, which takes care of always up-to-date values.
 
 ![wn8 calculator](https://fpcstat.cz/img/WN8Calaculator2_2.png)
 
-[https://fpcstat.cz/calculator](https://fpcstat.cz/calculator)
+[https://wn8-calculator.fpcstat.cz/](https://wn8-calculator.fpcstat.cz/)

@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import NativeSelect from '@material-ui/core/NativeSelect'
-import FormControl from '@material-ui/core/FormControl'
-import InputLabel from '@material-ui/core/InputLabel'
+import NativeSelect from '@mui/material/NativeSelect'
+import FormControl from '@mui/material/FormControl'
+import InputLabel from '@mui/material/InputLabel'
 
 class Calculator extends Component {
   constructor(props) {

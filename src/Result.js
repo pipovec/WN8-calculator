@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import History from './components/History';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-import Divider from '@material-ui/core/Divider';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import Divider from '@mui/material/Divider';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 import {wn8color} from 'wn8-color';
 
 class Result extends Component {
