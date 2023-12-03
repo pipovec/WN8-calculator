@@ -27,7 +27,7 @@ class History extends Component {
 
     var urlApi = new URL(process.env.REACT_APP_API_URL + '/api/expected_tank_value_histories');
     var params = {
-      'vehicle.tank_id': this.props.tankId,
+      'tank_id': this.props.tankId,
       'date[after]': date,
       'order[date]': 'DESC',
     };
