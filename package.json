@@ -1,6 +1,6 @@
 {
   "name": "wn8calculator",
-  "version": "2.3.0",
+  "version": "3.0.0",
   "private": false,
   "dependencies": {
     "@emotion/react": "^11.14.0",
