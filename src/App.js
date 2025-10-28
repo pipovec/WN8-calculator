@@ -29,11 +29,11 @@ const App = () => {
             <Box
                 sx={{
                     minHeight: '100vh',
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    background: 'linear-gradient(135deg, #485461 0%, #28313b 100%)',
                     py: 4,
                 }}
             >
-                <Container maxWidth="xl">
+                <Container maxWidth={false} sx={{ maxWidth: '1024px' }}>
                     {/* Header */}
                     <Box sx={{ textAlign: 'center', mb: 4 }}>
                         <Typography
@@ -67,15 +67,20 @@ const App = () => {
                     </Box>
 
                     {/* Main Content */}
-                    <Grid container spacing={3}>
-                        {/* Left Panel - Calculator */}
-                        <Grid item xs={12} lg={5}>
+                    <Grid container spacing={3} direction="column">
+                        {/* Calculator - Full Width */}
+                        <Grid item xs={12}>
                             <Card
                                 sx={{
-                                    height: '100%',
                                     width: '100%',
                                     display: 'flex',
                                     flexDirection: 'column',
+                                    transition: 'none',
+                                    transform: 'none',
+                                    '&:hover': {
+                                        transform: 'none',
+                                        boxShadow: (theme) => theme.shadows[1], // zachováva rovnaký tieň
+                                    }
                                 }}
                             >
                                 <CardContent sx={{ flexGrow: 1 }}>
@@ -102,39 +107,52 @@ const App = () => {
                             </Card>
                         </Grid>
 
-                        {/* Right Panel - Results */}
-                        <Grid item xs={12} lg={7}>
-                            <Grid container spacing={3}>
-                                {/* Tank Picture */}
-                                <Grid item xs={12}>
-                                    <Card>
-                                        <CardContent>
-                                            <Box
-                                                sx={{
-                                                    display: 'flex',
-                                                    justifyContent: 'center',
-                                                    alignItems: 'center',
-                                                    minHeight: 200,
-                                                    backgroundColor: '#f8f9fa',
-                                                    borderRadius: 2,
-                                                    overflow: 'hidden',
-                                                }}
-                                            >
-                                                <Picture picture_url={tankPictureUrl} />
-                                            </Box>
-                                        </CardContent>
-                                    </Card>
-                                </Grid>
+                        {/* Tank Picture - Full Width */}
+                        <Grid item xs={12}>
+                            <Card
+                                sx={{
+                                    transition: 'none',
+                                    transform: 'none',
+                                    '&:hover': {
+                                        transform: 'none',
+                                        boxShadow: (theme) => theme.shadows[1], // zachováva rovnaký tieň
+                                    }
+                                }}
+                            >
+                                <CardContent>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            minHeight: 200,
+                                            backgroundColor: '#f8f9fa',
+                                            borderRadius: 2,
+                                            overflow: 'hidden',
+                                        }}
+                                    >
+                                        <Picture picture_url={tankPictureUrl} />
+                                    </Box>
+                                </CardContent>
+                            </Card>
+                        </Grid>
 
-                                {/* WN8 Result */}
-                                <Grid item xs={12}>
-                                    <Card>
-                                        <CardContent>
-                                            <Result tank_id={tankId} />
-                                        </CardContent>
-                                    </Card>
-                                </Grid>
-                            </Grid>
+                        {/* WN8 Result - Full Width */}
+                        <Grid item xs={12}>
+                            <Card
+                                sx={{
+                                    transition: 'none',
+                                    transform: 'none',
+                                    '&:hover': {
+                                        transform: 'none',
+                                        boxShadow: (theme) => theme.shadows[1], // zachováva rovnaký tieň
+                                    }
+                                }}
+                            >
+                                <CardContent>
+                                    <Result tank_id={tankId} />
+                                </CardContent>
+                            </Card>
                         </Grid>
                     </Grid>
 
