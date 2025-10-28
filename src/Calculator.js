@@ -1,16 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import NativeSelect from '@mui/material/NativeSelect';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
+import Typography from '@mui/material/Typography';
+import Chip from '@mui/material/Chip';
 
 const Calculator = ({ onFindTankId, onFindTankPicture }) => {
     const [type, setType] = useState('mediumTank');
     const [level, setLevel] = useState('11');
     const [tankId, setTankId] = useState('0');
     const [tanks, setTanks] = useState([]);
+    const [loading, setLoading] = useState(false);
 
-    // Fetchovanie dát
+    const tankTypes = [
+        { value: 'mediumTank', label: 'Medium Tank', icon: '🎯' },
+        { value: 'heavyTank', label: 'Heavy Tank', icon: '🛡️' },
+        { value: 'lightTank', label: 'Light Tank', icon: '⚡' },
+        { value: 'AT-SPG', label: 'Tank Destroyer', icon: '🔫' },
+        { value: 'SPG', label: 'Artillery', icon: '💥' },
+    ];
+
+    // Fetch tanks data
     const fetchTanks = async (level, type) => {
+        setLoading(true);
         try {
             const urlApi = `${process.env.REACT_APP_API_URL}/api/encyclopedia-vehicles`;
             const params = new URLSearchParams({ level, type }).toString();
@@ -23,20 +38,23 @@ const Calculator = ({ onFindTankId, onFindTankPicture }) => {
             setTanks(data);
         } catch (error) {
             console.error('Failed to fetch tanks:', error);
+        } finally {
+            setLoading(false);
         }
     };
 
-    // Načítanie pri mountnutí
     useEffect(() => {
         fetchTanks(level, type);
     }, [level, type]);
 
     const handleType = (e) => {
         setType(e.target.value);
+        setTankId('0');
     };
 
     const handleLevel = (e) => {
         setLevel(e.target.value);
+        setTankId('0');
     };
 
     const handleTank = (e) => {
@@ -52,55 +70,98 @@ const Calculator = ({ onFindTankId, onFindTankPicture }) => {
         }
     };
 
+    const selectedTypeInfo = tankTypes.find((t) => t.value === type);
+
     return (
-        <div className="w3-row-padding w3-padding">
-            {/* Výber levelu */}
-            <div className="w3-third">
-                <FormControl fullWidth margin="dense" variant="outlined">
-                    <InputLabel shrink>Level</InputLabel>
-                    <NativeSelect value={level} onChange={handleLevel} name="Level">
-                        {Array.from({ length: 11 }, (_, i) => (
-                            <option key={i + 1} value={i + 1}>
-                                {i + 1}
-                            </option>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+            {/* Level Selection */}
+            <FormControl fullWidth>
+                <InputLabel id="level-label">Tank Level</InputLabel>
+                <Select
+                    labelId="level-label"
+                    value={level}
+                    label="Tank Level"
+                    onChange={handleLevel}
+                >
+                    {Array.from({ length: 11 }, (_, i) => (
+                        <MenuItem key={i + 1} value={i + 1}>
+                            Tier {i + 1}
+                        </MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+
+            {/* Type Selection */}
+            <FormControl fullWidth>
+                <InputLabel id="type-label">Tank Type</InputLabel>
+                <Select
+                    labelId="type-label"
+                    value={type}
+                    label="Tank Type"
+                    onChange={handleType}
+                >
+                    {tankTypes.map((tankType) => (
+                        <MenuItem key={tankType.value} value={tankType.value}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                <span>{tankType.icon}</span>
+                                <span>{tankType.label}</span>
+                            </Box>
+                        </MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+
+            {/* Current Selection Info */}
+            {selectedTypeInfo && (
+                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                    <Chip
+                        label={`Tier ${level}`}
+                        color="primary"
+                        size="small"
+                    />
+                    <Chip
+                        label={selectedTypeInfo.label}
+                        color="secondary"
+                        size="small"
+                        icon={<span>{selectedTypeInfo.icon}</span>}
+                    />
+                </Box>
+            )}
+
+            {/* Tank Selection */}
+            <FormControl fullWidth>
+                <InputLabel id="tank-label">Select Tank</InputLabel>
+                <Select
+                    labelId="tank-label"
+                    value={tankId}
+                    label="Select Tank"
+                    onChange={handleTank}
+                    disabled={loading || tanks.length === 0}
+                >
+                    <MenuItem value="0">
+                        {loading ? 'Loading tanks...' : 'Choose your tank'}
+                    </MenuItem>
+                    {tanks.length > 0 &&
+                        tanks.map((tank) => (
+                            <MenuItem key={tank.data.tank_id} value={tank.data.tank_id}>
+                                {tank.name}
+                            </MenuItem>
                         ))}
-                    </NativeSelect>
-                </FormControl>
-            </div>
+                </Select>
+            </FormControl>
 
-            {/* Výber typu */}
-            <div className="w3-third">
-                <FormControl fullWidth margin="dense" variant="outlined">
-                    <InputLabel shrink>Type</InputLabel>
-                    <NativeSelect value={type} onChange={handleType}>
-                        <option value="mediumTank">mediumTank</option>
-                        <option value="heavyTank">heavyTank</option>
-                        <option value="lightTank">lightTank</option>
-                        <option value="AT-SPG">TD</option>
-                        <option value="SPG">SPG</option>
-                    </NativeSelect>
-                </FormControl>
-            </div>
+            {loading && (
+                <Box sx={{ display: 'flex', justifyContent: 'center', py: 2 }}>
+                    <CircularProgress size={30} />
+                </Box>
+            )}
 
-            {/* Výber tanku */}
-            <div className="w3-third">
-                <FormControl fullWidth margin="dense" variant="outlined">
-                    <InputLabel shrink>Tank</InputLabel>
-                    <NativeSelect value={tankId} onChange={handleTank}>
-                        <option value="0">Choose your tank</option>
-                        {tanks.length > 0 ? (
-                            tanks.map((tank) => (
-                                <option key={tank.data.tank_id} value={tank.data.tank_id}>
-                                    {tank.name}
-                                </option>
-                            ))
-                        ) : (
-                            <option value="">Loading data ...</option>
-                        )}
-                    </NativeSelect>
-                </FormControl>
-            </div>
-        </div>
+            {!loading && tanks.length === 0 && (
+                <Typography variant="body2" color="text.secondary" align="center">
+                    No tanks available for this selection
+                </Typography>
+            )}
+        </Box>
     );
 };
 

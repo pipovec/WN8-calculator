@@ -1,9 +1,17 @@
-import React, { useEffect, useState } from "react";
-import LineChart from "./Chart";
-import moment from "moment";
+import React, { useEffect, useState } from 'react';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import CircularProgress from '@mui/material/CircularProgress';
+import Link from '@mui/material/Link';
+import TimelineIcon from '@mui/icons-material/Timeline';
+import LineChart from './Chart';
+import moment from 'moment';
 
 const History = ({ tankId }) => {
     const [historyData, setHistoryData] = useState([]);
+    const [loading, setLoading] = useState(false);
     const [charts, setCharts] = useState({
         frags: [],
         dmg: [],
@@ -19,28 +27,31 @@ const History = ({ tankId }) => {
     }, [tankId]);
 
     const getHistoryData = async () => {
-        const date = moment().day(-14).format("YYYY-MM-DD");
+        setLoading(true);
+        const date = moment().day(-14).format('YYYY-MM-DD');
         const urlApi = new URL(
             `https://api2.fpcstat.cz/api/expected_tank_value_histories`
         );
 
         const params = {
             tank_id: tankId,
-            "date[after]": date,
-            "order[date]": "DESC",
+            'date[after]': date,
+            'order[date]': 'DESC',
         };
 
         urlApi.search = new URLSearchParams(params).toString();
 
         try {
             const response = await fetch(urlApi, {
-                headers: { Accept: "application/json" },
+                headers: { Accept: 'application/json' },
             });
             const json = await response.json();
             setHistoryData(json);
             setCharData(json);
         } catch (error) {
-            console.error("Error fetching history data:", error);
+            console.error('Error fetching history data:', error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -54,27 +65,84 @@ const History = ({ tankId }) => {
         });
     };
 
+    if (loading) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+                <CircularProgress />
+            </Box>
+        );
+    }
+
     return (
-        <div className="w3-row">
-            <div className="w3-col l6 m12">
-                <LineChart data={charts.frags} name="Frags history" />
-            </div>
-            <div className="w3-col l6 m12">
-                <LineChart data={charts.dmg} name="Damage history" />
-            </div>
-            <div className="w3-col l6 m12">
-                <LineChart data={charts.spot} name="Spot history" />
-            </div>
-            <div className="w3-col l6 m12">
-                <LineChart data={charts.def} name="Def history" />
-            </div>
-            <div className="w3-col l6 m12">
-                <LineChart data={charts.win} name="Win history" />
-            </div>
-            <div className="w3-col l6 m12 w3-center">
-                <a href="https://etvh.fpcstat.cz">More data range for ETV</a>
-            </div>
-        </div>
+        <Box>
+            <Box
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1,
+                    mb: 3,
+                }}
+            >
+                <TimelineIcon color="primary" />
+                <Typography variant="h6" color="primary">
+                    Historical Data (Last 14 Days)
+                </Typography>
+            </Box>
+
+            <Grid container spacing={2}>
+                <Grid item xs={12} md={6}>
+                    <Paper elevation={2} sx={{ p: 2 }}>
+                        <LineChart data={charts.frags} name="Frags History" />
+                    </Paper>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <Paper elevation={2} sx={{ p: 2 }}>
+                        <LineChart data={charts.dmg} name="Damage History" />
+                    </Paper>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <Paper elevation={2} sx={{ p: 2 }}>
+                        <LineChart data={charts.spot} name="Spot History" />
+                    </Paper>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <Paper elevation={2} sx={{ p: 2 }}>
+                        <LineChart data={charts.def} name="Defense History" />
+                    </Paper>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <Paper elevation={2} sx={{ p: 2 }}>
+                        <LineChart data={charts.win} name="Win Rate History" />
+                    </Paper>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <Paper
+                        elevation={2}
+                        sx={{
+                            p: 2,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            minHeight: 200,
+                        }}
+                    >
+                        <Box sx={{ textAlign: 'center' }}>
+                            <Typography variant="h6" gutterBottom>
+                                Need More Data?
+                            </Typography>
+                            <Link
+                                href="https://etvh.fpcstat.cz"
+                                target="_blank"
+                                rel="noopener"
+                                sx={{ fontSize: '1.1rem' }}
+                            >
+                                View Extended Historical Data →
+                            </Link>
+                        </Box>
+                    </Paper>
+                </Grid>
+            </Grid>
+        </Box>
     );
 };
 
