@@ -27,7 +27,7 @@ const Calculator = ({ onFindTankId, onFindTankPicture }) => {
     const fetchTanks = async (level, type) => {
         setLoading(true);
         try {
-            const urlApi = `${process.env.REACT_APP_API_URL}/api/encyclopedia-vehicles`;
+            const urlApi = `${import.meta.env.VITE_API_URL}/api/encyclopedia-vehicles`;
             const params = new URLSearchParams({ level, type }).toString();
 
             const response = await fetch(`${urlApi}?${params}`, {

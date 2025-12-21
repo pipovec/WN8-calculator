@@ -45,7 +45,7 @@ const Result = ({ tank_id }) => {
         const fetchTankData = async () => {
             if (tank_id !== 0) {
                 try {
-                    const apiURL = `${process.env.REACT_APP_API_URL}/api/expected-tank-values/${tank_id}`;
+                    const apiURL = `${import.meta.env.VITE_API_URL}/api/expected-tank-values/${tank_id}`;
                     const response = await fetch(apiURL, { headers: { Accept: 'application/json' } });
                     const data = await response.json();
                     setTankEtvData(data.data);
