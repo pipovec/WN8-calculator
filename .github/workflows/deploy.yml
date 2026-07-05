@@ -28,6 +28,8 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          VITE_API_URL: https://api3.fpcstat.cz
 
   deploy:
     name: Deploy to Cloudflare Pages
@@ -48,6 +50,8 @@ jobs:
       - run: npm ci
 
       - run: npm run build
+        env:
+          VITE_API_URL: https://api3.fpcstat.cz
 
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
