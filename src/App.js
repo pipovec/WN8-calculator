@@ -20,8 +20,6 @@ import Result from './Result';
 const App = () => {
     const [tankId, setTankId] = useState(0.0);
     const [tankPictureUrl, setTankPictureUrl] = useState('');
-    const [etvTank, setEtvTank] = useState('');
-    const [tanks, setTanks] = useState('');
 
     return (
         <ThemeProvider theme={theme}>
@@ -69,7 +67,7 @@ const App = () => {
                     {/* Main Content */}
                     <Grid container spacing={3} direction="column">
                         {/* Calculator - Full Width */}
-                        <Grid item xs={12}>
+                        <Grid size={12}>
                             <Card
                                 sx={{
                                     width: '100%',
@@ -98,9 +96,7 @@ const App = () => {
                                         Select Your Tank
                                     </Typography>
                                     <Calculator
-                                        tanks={tanks}
                                         onFindTankId={setTankId}
-                                        onFindETV={setEtvTank}
                                         onFindTankPicture={setTankPictureUrl}
                                     />
                                 </CardContent>
@@ -108,7 +104,7 @@ const App = () => {
                         </Grid>
 
                         {/* Tank Picture - Full Width */}
-                        <Grid item xs={12}>
+                        <Grid size={12}>
                             <Card
                                 sx={{
                                     transition: 'none',
@@ -138,7 +134,7 @@ const App = () => {
                         </Grid>
 
                         {/* WN8 Result - Full Width */}
-                        <Grid item xs={12}>
+                        <Grid size={12}>
                             <Card
                                 sx={{
                                     transition: 'none',

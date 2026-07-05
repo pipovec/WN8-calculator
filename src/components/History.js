@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -10,7 +10,6 @@ import LineChart from './Chart';
 import moment from 'moment';
 
 const History = ({ tankId }) => {
-    const [historyData, setHistoryData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [charts, setCharts] = useState({
         frags: [],
@@ -20,13 +19,7 @@ const History = ({ tankId }) => {
         win: [],
     });
 
-    useEffect(() => {
-        if (tankId > 0) {
-            getHistoryData();
-        }
-    }, [tankId]);
-
-    const getHistoryData = async () => {
+    const getHistoryData = useCallback(async () => {
         setLoading(true);
         const date = moment().day(-14).format('YYYY-MM-DD');
         const urlApi = new URL(
@@ -46,14 +39,19 @@ const History = ({ tankId }) => {
                 headers: { Accept: 'application/json' },
             });
             const json = await response.json();
-            setHistoryData(json);
             setCharData(json);
         } catch (error) {
             console.error('Error fetching history data:', error);
         } finally {
             setLoading(false);
         }
-    };
+    }, [tankId]);
+
+    useEffect(() => {
+        if (tankId > 0) {
+            getHistoryData();
+        }
+    }, [tankId, getHistoryData]);
 
     const setCharData = (data) => {
         setCharts({
@@ -90,32 +88,32 @@ const History = ({ tankId }) => {
             </Box>
 
             <Grid container spacing={2}>
-                <Grid item xs={12} md={6}>
+                <Grid size={{ xs: 12, md: 6 }}>
                     <Paper elevation={2} sx={{ p: 2 }}>
                         <LineChart data={charts.frags} name="Frags History" />
                     </Paper>
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid size={{ xs: 12, md: 6 }}>
                     <Paper elevation={2} sx={{ p: 2 }}>
                         <LineChart data={charts.dmg} name="Damage History" />
                     </Paper>
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid size={{ xs: 12, md: 6 }}>
                     <Paper elevation={2} sx={{ p: 2 }}>
                         <LineChart data={charts.spot} name="Spot History" />
                     </Paper>
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid size={{ xs: 12, md: 6 }}>
                     <Paper elevation={2} sx={{ p: 2 }}>
                         <LineChart data={charts.def} name="Defense History" />
                     </Paper>
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid size={{ xs: 12, md: 6 }}>
                     <Paper elevation={2} sx={{ p: 2 }}>
                         <LineChart data={charts.win} name="Win Rate History" />
                     </Paper>
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid size={{ xs: 12, md: 6 }}>
                     <Paper
                         elevation={2}
                         sx={{

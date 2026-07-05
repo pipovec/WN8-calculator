@@ -15,6 +15,12 @@ const Calculator = ({ onFindTankId, onFindTankPicture }) => {
     const [tanks, setTanks] = useState([]);
     const [loading, setLoading] = useState(false);
 
+    const resetSelection = () => {
+        setTankId('0');
+        onFindTankId('0');
+        onFindTankPicture('');
+    };
+
     const tankTypes = [
         { value: 'mediumTank', label: 'Medium Tank', icon: 'https://eu-wotp.wgcdn.co/dcont/fb/image/tactics_mt.png' },
         { value: 'heavyTank', label: 'Heavy Tank', icon: 'https://eu-wotp.wgcdn.co/dcont/fb/image/tactics_ht.png' },
@@ -49,12 +55,12 @@ const Calculator = ({ onFindTankId, onFindTankPicture }) => {
 
     const handleType = (e) => {
         setType(e.target.value);
-        setTankId('0');
+        resetSelection();
     };
 
     const handleLevel = (e) => {
         setLevel(e.target.value);
-        setTankId('0');
+        resetSelection();
     };
 
     const handleTank = (e) => {

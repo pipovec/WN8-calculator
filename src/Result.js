@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
@@ -17,9 +17,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Alert from '@mui/material/Alert';
+import CircularProgress from '@mui/material/CircularProgress';
 import { wn8color } from 'wn8-color';
 
-import History from './components/History';
+const History = lazy(() => import('./components/History'));
 
 const Result = ({ tank_id }) => {
     const [yFrag, setYFrag] = useState(0.0);
@@ -173,7 +174,7 @@ const Result = ({ tank_id }) => {
 
             {/* Input Fields */}
             <Grid container spacing={2} sx={{ mb: 3 }}>
-                <Grid item xs={12} sm={6} md={4}>
+                <Grid size={{ xs: 12, sm: 6, md: 4 }}>
                     <TextField
                         fullWidth
                         type="number"
@@ -183,7 +184,7 @@ const Result = ({ tank_id }) => {
                         variant="outlined"
                     />
                 </Grid>
-                <Grid item xs={12} sm={6} md={4}>
+                <Grid size={{ xs: 12, sm: 6, md: 4 }}>
                     <TextField
                         fullWidth
                         type="number"
@@ -193,7 +194,7 @@ const Result = ({ tank_id }) => {
                         variant="outlined"
                     />
                 </Grid>
-                <Grid item xs={12} sm={6} md={4}>
+                <Grid size={{ xs: 12, sm: 6, md: 4 }}>
                     <TextField
                         fullWidth
                         type="number"
@@ -203,7 +204,7 @@ const Result = ({ tank_id }) => {
                         variant="outlined"
                     />
                 </Grid>
-                <Grid item xs={12} sm={6} md={4}>
+                <Grid size={{ xs: 12, sm: 6, md: 4 }}>
                     <TextField
                         fullWidth
                         type="number"
@@ -213,7 +214,7 @@ const Result = ({ tank_id }) => {
                         variant="outlined"
                     />
                 </Grid>
-                <Grid item xs={12} sm={6} md={4}>
+                <Grid size={{ xs: 12, sm: 6, md: 4 }}>
                     <TextField
                         fullWidth
                         type="number"
@@ -223,7 +224,7 @@ const Result = ({ tank_id }) => {
                         variant="outlined"
                     />
                 </Grid>
-                <Grid item xs={12} sm={6} md={4}>
+                <Grid size={{ xs: 12, sm: 6, md: 4 }}>
                     <Button
                         fullWidth
                         variant="contained"
@@ -342,7 +343,15 @@ const Result = ({ tank_id }) => {
 
             {/* History Mode */}
             <Collapse in={historyMode}>
-                <History tankId={tank_id} />
+                {historyMode && (
+                    <Suspense fallback={
+                        <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+                            <CircularProgress />
+                        </Box>
+                    }>
+                        <History tankId={tank_id} />
+                    </Suspense>
+                )}
             </Collapse>
         </Box>
     );
