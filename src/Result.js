@@ -42,23 +42,46 @@ const Result = ({ tank_id: rawTankId }) => {
 
     const [tankEtvData, setTankEtvData] = useState({});
     const [WN8, setWN8] = useState(0.0);
+    const [tankDataNotice, setTankDataNotice] = useState(null);
 
     // Fetch expected values for tank
     useEffect(() => {
+        if (tank_id === 0) return;
+
         const fetchTankData = async () => {
-            if (tank_id !== 0) {
-                try {
-                    const apiURL = `${import.meta.env.VITE_API_URL}/api/expected-tank-values/${tank_id}`;
-                    const response = await fetch(apiURL, { headers: { Accept: 'application/json' } });
-                    const data = await response.json();
-                    setTankEtvData(data.data);
-                } catch (error) {
-                    console.error('Failed to fetch tank data:', error);
+            try {
+                const apiURL = `${import.meta.env.VITE_API_URL}/api/expected-tank-values/${tank_id}`;
+                const response = await fetch(apiURL, { headers: { Accept: 'application/json' } });
+
+                if (response.status === 404) {
+                    setTankEtvData({});
+                    setTankDataNotice('No expected values are available for this tank.');
+                    return;
                 }
+                if (!response.ok) {
+                    setTankEtvData({});
+                    setTankDataNotice('No expected values are available for this tank right now.');
+                    return;
+                }
+
+                const data = await response.json();
+                setTankEtvData(data.data || {});
+                setTankDataNotice(null);
+            } catch (error) {
+                console.error('Failed to fetch tank data:', error);
+                setTankEtvData({});
+                setTankDataNotice('No expected values are available for this tank right now.');
             }
         };
         fetchTankData();
     }, [tank_id]);
+
+    // Auto-dismiss the notice after 10 seconds
+    useEffect(() => {
+        if (!tankDataNotice) return;
+        const timer = setTimeout(() => setTankDataNotice(null), 10000);
+        return () => clearTimeout(timer);
+    }, [tankDataNotice]);
 
     // Load average values from API data
     const clickAvgValue = () => {
@@ -154,6 +177,12 @@ const Result = ({ tank_id: rawTankId }) => {
 
     return (
         <Box>
+            {tankDataNotice && (
+                <Alert severity="info" sx={{ mb: 3 }}>
+                    {tankDataNotice}
+                </Alert>
+            )}
+
             {/* WN8 Result Display */}
             <Paper
                 elevation={0}
