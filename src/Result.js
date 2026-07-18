@@ -22,7 +22,9 @@ import { wn8color } from 'wn8-color';
 
 const History = lazy(() => import('./components/History'));
 
-const Result = ({ tank_id }) => {
+const Result = ({ tank_id: rawTankId }) => {
+    const tank_id = Number(rawTankId) || 0;
+
     const [yFrag, setYFrag] = useState(0.0);
     const [yDmg, setYDmg] = useState(0.0);
     const [ySpot, setYSpot] = useState(0.0);
